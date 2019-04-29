@@ -27,6 +27,7 @@ public class CustomerListActivity extends AppCompatActivity {
         ListView customerList = findViewById(R.id.customer_list);
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, customers);
         customerList.setAdapter(adapter);
+        
 
 
 
