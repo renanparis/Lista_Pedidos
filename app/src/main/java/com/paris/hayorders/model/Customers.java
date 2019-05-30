@@ -1,15 +1,23 @@
 package com.paris.hayorders.model;
 
-import androidx.annotation.NonNull;
-
 public class Customers {
 
     private String name;
     private String city;
+    private String order;
 
-    public Customers(String name, String city) {
+    public Customers(String name, String city, String order) {
         this.name = name;
         this.city = city;
+        this.order = order;
+    }
+
+    public String getOrder() {
+        return order;
+    }
+
+    public void setOrder(String order) {
+        this.order = order;
     }
 
     public String getName() {
