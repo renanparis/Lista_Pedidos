@@ -1,15 +1,16 @@
-package com.paris.hayorders;
+package com.paris.hayorders.activity;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
-import android.text.Layout;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.paris.hayorders.R;
 import com.paris.hayorders.model.Customers;
 import com.paris.hayorders.recyclerview.CustomersRecyclerAdapter;
 
@@ -24,8 +25,8 @@ public class CustomerListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_customer_list);
 
         List<Customers> customers = new ArrayList<>();
-        Customers customer1 = new Customers("Juliana", "Pirassununga", "55");
-        Customers customer2 = new Customers("José", "Porto Ferreira", "100");
+        Customers customer1 = new Customers("Juliana", "Pirassununga", 55);
+        Customers customer2 = new Customers("José", "Porto Ferreira", 100);
         customers.add(customer1);
         customers.add(customer2);
 
@@ -35,6 +36,16 @@ public class CustomerListActivity extends AppCompatActivity {
                 new LinearLayoutManager(this);
 
         customerList.setLayoutManager(layoutManager);
+
+        FloatingActionButton addCutomer = findViewById(R.id.fab_add_cutomers);
+        addCutomer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goToForm = new Intent(CustomerListActivity.this, CustomerForm.class);
+
+                startActivity(goToForm);
+            }
+        });
 
 
 

@@ -4,19 +4,19 @@ public class Customers {
 
     private String name;
     private String city;
-    private String order;
+    private long order;
 
-    public Customers(String name, String city, String order) {
+    public Customers(String name, String city, long order) {
         this.name = name;
         this.city = city;
         this.order = order;
     }
 
-    public String getOrder() {
+    public long getOrder() {
         return order;
     }
 
-    public void setOrder(String order) {
+    public void setOrder(long order) {
         this.order = order;
     }
 
