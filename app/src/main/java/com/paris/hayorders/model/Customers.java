@@ -1,7 +1,13 @@
 package com.paris.hayorders.model;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Customers {
 
+    @PrimaryKey(autoGenerate = true)
+    private int id;
     private String name;
     private String city;
     private long order;
@@ -10,6 +16,14 @@ public class Customers {
         this.name = name;
         this.city = city;
         this.order = order;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public long getOrder() {
