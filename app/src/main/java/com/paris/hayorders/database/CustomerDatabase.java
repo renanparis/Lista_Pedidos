@@ -21,7 +21,7 @@ public abstract class CustomerDatabase extends RoomDatabase {
         if (instance == null){
 
             instance = Room.databaseBuilder(context,
-                    CustomerDatabase.class, NAME_DATABASE).build();
+                    CustomerDatabase.class, NAME_DATABASE).allowMainThreadQueries().build();
         }
 
         return instance;

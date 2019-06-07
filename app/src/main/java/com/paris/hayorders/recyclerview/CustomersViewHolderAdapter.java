@@ -26,7 +26,7 @@ class CustomersViewHolderAdapter extends RecyclerView.ViewHolder {
         this.customer = customer;
         name.setText(customer.getName());
         city.setText(customer.getCity());
-        if (order != null) {
+        if (customer.getOrder() != 0) {
             order.setText(String.valueOf(customer.getOrder()));
 
         }

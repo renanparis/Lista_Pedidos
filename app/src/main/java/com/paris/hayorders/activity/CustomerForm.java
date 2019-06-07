@@ -22,16 +22,16 @@ public class CustomerForm extends AppCompatActivity {
 
     private List<FormFieldValidator> validators = new ArrayList<>();
     private CustomerDao dao;
+    private Customers customer;
     private EditText fieldCity;
     private EditText fieldName;
-    private Customers customer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_form);
         dao = CustomerDatabase.getInstance(this).customerDao();
-
+        customer = new Customers();
         configFieldName();
         configFieldCity();
         configButtonSaveCustomer();
@@ -47,6 +47,7 @@ public class CustomerForm extends AppCompatActivity {
 
                     setCustomer();
                     saveCustomer(customer);
+                    finish();
 
                 }
 
@@ -59,7 +60,7 @@ public class CustomerForm extends AppCompatActivity {
     }
 
     private void setCustomer() {
-        String name = fieldName.getText().toString();
+        String name =fieldName.getText().toString();
         String city = fieldCity.getText().toString();
         customer.setName(name);
         customer.setCity(city);
@@ -80,12 +81,14 @@ public class CustomerForm extends AppCompatActivity {
     private void configFieldCity() {
         TextInputLayout inputLayoutCity = findViewById(R.id.form_field_city);
         fieldCity = inputLayoutCity.getEditText();
+
         validFormField(inputLayoutCity);
     }
 
     private void configFieldName() {
         TextInputLayout inputLayoutName = findViewById(R.id.form_field_name);
         fieldName = inputLayoutName.getEditText();
+
         validFormField(inputLayoutName);
     }
 

@@ -35,6 +35,7 @@
       android:layout_marginBottom="8dp">
 
       <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/form_edit_text_name"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:hint="Nome"
@@ -52,6 +53,7 @@
         android:layout_marginBottom="8dp">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/form_edit_text_city"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Cidade"
