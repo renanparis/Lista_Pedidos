@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.paris.hayorders.R;
 import com.paris.hayorders.model.Customers;
 
- class CustomersViewHolderAdapter extends RecyclerView.ViewHolder {
+class CustomersViewHolderAdapter extends RecyclerView.ViewHolder {
     private final TextView name;
     private final TextView city;
     private final TextView order;
@@ -26,6 +26,9 @@ import com.paris.hayorders.model.Customers;
         this.customer = customer;
         name.setText(customer.getName());
         city.setText(customer.getCity());
-        order.setText(String.valueOf(customer.getOrder()));
+        if (order != null) {
+            order.setText(String.valueOf(customer.getOrder()));
+
+        }
     }
 }

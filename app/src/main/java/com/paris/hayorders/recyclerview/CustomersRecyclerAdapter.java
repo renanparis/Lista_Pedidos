@@ -11,15 +11,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.paris.hayorders.R;
 import com.paris.hayorders.model.Customers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CustomersRecyclerAdapter extends RecyclerView.Adapter<CustomersViewHolderAdapter> {
 
-    private List<Customers> customers;
+    private List<Customers> customers = new ArrayList<>();
     private Context context;
 
-    public CustomersRecyclerAdapter(List<Customers> customers, Context context) {
-        this.customers = customers;
+    public CustomersRecyclerAdapter(Context context) {
         this.context = context;
     }
 
@@ -44,5 +44,15 @@ public class CustomersRecyclerAdapter extends RecyclerView.Adapter<CustomersView
     @Override
     public int getItemCount() {
         return customers.size();
+    }
+
+
+    private void notifiesAdapter() {
+        notifyDataSetChanged();
+    }
+
+    public void setListCustomers(List<Customers> customers){
+       this.customers.addAll(customers);
+
     }
 }
