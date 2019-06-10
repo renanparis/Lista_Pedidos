@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.paris.hayorders.R;
+import com.paris.hayorders.asynctask.SearchAllCustomers;
 import com.paris.hayorders.dao.CustomerDao;
 import com.paris.hayorders.database.CustomerDatabase;
 import com.paris.hayorders.model.Customers;
@@ -21,6 +22,7 @@ public class CustomerListActivity extends AppCompatActivity {
 
     private RecyclerView customerList;
     private CustomerDao dao;
+    private CustomersRecyclerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,7 @@ public class CustomerListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_customer_list);
         CustomerDatabase db = CustomerDatabase.getInstance(this);
         dao = db.customerDao();
+        configList();
         configFabAddCustomer();
 
 
@@ -36,25 +39,30 @@ public class CustomerListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        configList();
+    }
 
-
+    private void configRecyclerAdapter(List<Customers> customers) {
+        customerList = findViewById(R.id.customer_list);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        customerList.setLayoutManager(layoutManager);
+        adapter = new CustomersRecyclerAdapter(customers, this);
+        customerList.setAdapter(adapter);
     }
 
     private void configList() {
 
-        List<Customers> customers = dao.searchAllCustomers();
-        configRecyclerView(customers);
+        new SearchAllCustomers(dao, new SearchAllCustomers.ListCustomersFoundListener() {
+            @Override
+            public void ListFound(List<Customers> customers) {
+
+                configRecyclerAdapter(customers);
+
+
+            }
+        }).execute();
+
 
     }
-
-    private void configRecyclerView(List<Customers> customers) {
-        customerList = findViewById(R.id.customer_list);
-        customerList.setAdapter(new CustomersRecyclerAdapter(customers, this));
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        customerList.setLayoutManager(layoutManager);
-    }
-
 
     private void configFabAddCustomer() {
         FloatingActionButton addCutomer = findViewById(R.id.fab_add_cutomers);
@@ -67,5 +75,6 @@ public class CustomerListActivity extends AppCompatActivity {
         });
     }
 
-
 }
+
+

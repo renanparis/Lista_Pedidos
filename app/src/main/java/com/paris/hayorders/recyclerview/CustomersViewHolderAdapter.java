@@ -13,7 +13,6 @@ class CustomersViewHolderAdapter extends RecyclerView.ViewHolder {
     private final TextView name;
     private final TextView city;
     private final TextView order;
-    private Customers customer;
 
     CustomersViewHolderAdapter(@NonNull View itemView) {
         super(itemView);
@@ -23,7 +22,7 @@ class CustomersViewHolderAdapter extends RecyclerView.ViewHolder {
     }
 
     void setValues(Customers customer) {
-        this.customer = customer;
+
         name.setText(customer.getName());
         city.setText(customer.getCity());
         if (customer.getOrder() != 0) {

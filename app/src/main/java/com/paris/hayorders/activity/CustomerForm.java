@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.paris.hayorders.R;
-import com.paris.hayorders.asynctask.SaveCustomer;
+import com.paris.hayorders.asynctask.SaveCustomerTask;
 import com.paris.hayorders.dao.CustomerDao;
 import com.paris.hayorders.database.CustomerDatabase;
 import com.paris.hayorders.model.Customers;
@@ -56,7 +56,7 @@ public class CustomerForm extends AppCompatActivity {
     }
 
     private void saveCustomer(Customers customer) {
-        new SaveCustomer(dao, customer, this::finish).execute();
+        new SaveCustomerTask(dao, customer, this::finish).execute();
     }
 
     private void setCustomer() {
