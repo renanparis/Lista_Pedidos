@@ -28,8 +28,6 @@ public class SearchAllCustomers extends AsyncTask<Void, Void, List<Customers>> {
         super.onPostExecute(customers);
         listener.ListFound(customers);
 
-
-
     }
 
     public interface ListCustomersFoundListener{

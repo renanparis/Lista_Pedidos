@@ -33,7 +33,6 @@ public class CustomerListActivity extends AppCompatActivity {
         configList();
         configFabAddCustomer();
 
-
     }
 
     @Override
@@ -57,11 +56,8 @@ public class CustomerListActivity extends AppCompatActivity {
 
                 configRecyclerAdapter(customers);
 
-
             }
         }).execute();
-
-
     }
 
     private void configFabAddCustomer() {
