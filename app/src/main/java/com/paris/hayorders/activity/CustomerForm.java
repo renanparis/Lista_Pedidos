@@ -1,5 +1,7 @@
 package com.paris.hayorders.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.paris.hayorders.R;
-import com.paris.hayorders.asynctask.SaveCustomerTask;
 import com.paris.hayorders.dao.CustomerDao;
 import com.paris.hayorders.database.CustomerDatabase;
 import com.paris.hayorders.model.Customers;
@@ -22,7 +23,6 @@ public class CustomerForm extends AppCompatActivity {
 
     private List<FormFieldValidator> validators = new ArrayList<>();
     private CustomerDao dao;
-    private Customers customer;
     private EditText fieldCity;
     private EditText fieldName;
 
@@ -31,7 +31,6 @@ public class CustomerForm extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_form);
         dao = CustomerDatabase.getInstance(this).customerDao();
-        customer = new Customers();
         configFieldName();
         configFieldCity();
         configButtonSaveCustomer();
@@ -44,9 +43,8 @@ public class CustomerForm extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (validFields()) {
-
-                    setCustomer();
-                    saveCustomer(customer);
+                    Customers customerCreated = createCustomer();
+                    returnCustomerCreated(customerCreated);
                     finish();
 
                 }
@@ -55,15 +53,20 @@ public class CustomerForm extends AppCompatActivity {
         });
     }
 
-    private void saveCustomer(Customers customer) {
-        new SaveCustomerTask(dao, customer, this::finish).execute();
+    private void returnCustomerCreated(Customers customerCreated) {
+        Intent returnResult = new Intent();
+        returnResult.putExtra("insert_customer", customerCreated);
+        setResult(Activity.RESULT_OK, returnResult);
     }
 
-    private void setCustomer() {
+
+    private Customers createCustomer() {
         String name =fieldName.getText().toString();
         String city = fieldCity.getText().toString();
+        Customers customer = new Customers();
         customer.setName(name);
         customer.setCity(city);
+        return customer;
     }
 
     private boolean validFields() {

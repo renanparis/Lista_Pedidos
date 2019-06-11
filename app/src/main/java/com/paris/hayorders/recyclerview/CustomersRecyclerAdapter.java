@@ -46,6 +46,8 @@ public class CustomersRecyclerAdapter extends RecyclerView.Adapter<CustomersView
     }
 
 
-
-
+    public void insertCustomer(Customers customer) {
+        customers.add(customer);
+        notifyDataSetChanged();
+    }
 }
