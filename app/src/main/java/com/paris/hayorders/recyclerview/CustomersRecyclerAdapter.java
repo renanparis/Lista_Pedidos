@@ -56,4 +56,9 @@ public class CustomersRecyclerAdapter extends RecyclerView.Adapter<CustomersView
         customers.add(customer);
         notifyDataSetChanged();
     }
+
+    public void update(Customers customer, int position) {
+        customers.set(position, customer);
+        notifyDataSetChanged();
+    }
 }

@@ -10,8 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.paris.hayorders.R;
-import com.paris.hayorders.dao.CustomerDao;
-import com.paris.hayorders.database.CustomerDatabase;
 import com.paris.hayorders.model.Customers;
 import com.paris.hayorders.validator.FormFieldValidator;
 
@@ -20,20 +18,43 @@ import java.util.List;
 
 public class CustomerForm extends AppCompatActivity {
 
-    public static final String KEY_NEW_CUSTOMER = "insert_customer";
+    public static final String KEY_RESULT_FORM = "result_form_customer";
+    public static final String EDIT_TITLE = "Editar Cliente";
+    public static final String INSERT_TITLE = "Novo Cliente";
+    public static final int INVALID_POSITION = -1;
     private List<FormFieldValidator> validators = new ArrayList<>();
-    private CustomerDao dao;
     private EditText fieldCity;
     private EditText fieldName;
+    private Customers customer;
+    private int positionReceived;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_form);
-        dao = CustomerDatabase.getInstance(this).customerDao();
         configFieldName();
         configFieldCity();
+        loadCustomer();
         configButtonSaveCustomer();
+    }
+
+    private void loadCustomer() {
+        Intent dataReceived = getIntent();
+        if (dataReceived.hasExtra("update_customer")){
+            setTitle(EDIT_TITLE);
+            customer = dataReceived.getParcelableExtra("update_customer");
+            positionReceived = dataReceived.getIntExtra("position", INVALID_POSITION);
+            fillFields();
+        }else{
+            setTitle(INSERT_TITLE);
+            customer = new Customers();
+
+        }
+    }
+
+    private void fillFields() {
+        fieldName.setText(customer.getName());
+        fieldCity.setText(customer.getCity());
     }
 
     private void configButtonSaveCustomer() {
@@ -41,29 +62,27 @@ public class CustomerForm extends AppCompatActivity {
         btnSaveCustomer.setOnClickListener(v -> {
 
             if (validFields()) {
-                Customers customerCreated = createCustomer();
-                returnCustomerCreated(customerCreated);
+                createCustomer();
+                returnCustomerCreated(customer);
                 finish();
-
             }
-
         });
     }
 
-    private void returnCustomerCreated(Customers customerCreated) {
+    private void returnCustomerCreated(Customers customer) {
         Intent returnResult = new Intent();
-        returnResult.putExtra(KEY_NEW_CUSTOMER, customerCreated);
+        returnResult.putExtra(KEY_RESULT_FORM, customer);
+        returnResult.putExtra("position", positionReceived);
         setResult(Activity.RESULT_OK, returnResult);
     }
 
 
-    private Customers createCustomer() {
-        String name =fieldName.getText().toString();
+    private void createCustomer() {
+        String name = fieldName.getText().toString();
         String city = fieldCity.getText().toString();
-        Customers customer = new Customers();
         customer.setName(name);
         customer.setCity(city);
-        return customer;
+
     }
 
     private boolean validFields() {

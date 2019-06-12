@@ -15,6 +15,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.paris.hayorders.R;
 import com.paris.hayorders.asynctask.SaveCustomerTask;
 import com.paris.hayorders.asynctask.SearchAllCustomers;
+import com.paris.hayorders.asynctask.UpdateCustomerTask;
 import com.paris.hayorders.dao.CustomerDao;
 import com.paris.hayorders.database.CustomerDatabase;
 import com.paris.hayorders.model.Customers;
@@ -27,6 +28,7 @@ public class CustomerListActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_INSERT_CUSTOMER = 1;
     public static final int REQUEST_CODE_UPDATE_CUSTOMER = 2;
     public static final String KEY_UPDATE_CUSTOMER = "update_customer";
+    public static final String KEY_POSITION = "position";
     private CustomerDao dao;
     private CustomersRecyclerAdapter adapter;
 
@@ -54,15 +56,13 @@ public class CustomerListActivity extends AppCompatActivity {
     private void configContextMenuListener() {
         adapter.setOnMenuItemClickListener((item, customer, position) -> {
 
-            switch (item.getItemId()){
+            switch (item.getItemId()) {
                 case 1:
                     Intent goToUpdateCustomerForm = new Intent(this, CustomerForm.class);
                     goToUpdateCustomerForm.putExtra(KEY_UPDATE_CUSTOMER, customer);
+                    goToUpdateCustomerForm.putExtra(KEY_POSITION, position);
                     startActivityForResult(goToUpdateCustomerForm, REQUEST_CODE_UPDATE_CUSTOMER);
             }
-
-
-
 
         });
     }
@@ -85,11 +85,25 @@ public class CustomerListActivity extends AppCompatActivity {
 
         if (requestCode == REQUEST_CODE_INSERT_CUSTOMER && resultCode == Activity.RESULT_OK && data.hasExtra("insert_customer")) {
 
-            Customers customerReceived = data.getParcelableExtra("insert_customer");
+            Customers newCustomerReceived = data.getParcelableExtra("insert_customer");
 
-            new SaveCustomerTask(dao, customerReceived).execute();
+            new SaveCustomerTask(dao, newCustomerReceived).execute();
 
-            adapter.insertCustomer(customerReceived);
+            adapter.insertCustomer(newCustomerReceived);
+        }
+
+        if (requestCode == REQUEST_CODE_UPDATE_CUSTOMER && resultCode == Activity.RESULT_OK && data.hasExtra("result_form_customer")) {
+
+
+            Customers updateCustomerReceived = data.getParcelableExtra(KEY_UPDATE_CUSTOMER);
+            int positionReceived = data.getIntExtra(KEY_POSITION, -1);
+            if (positionReceived > -1){
+
+                new UpdateCustomerTask(dao, updateCustomerReceived).execute();
+                adapter.update(updateCustomerReceived, positionReceived);
+                Toast.makeText(this, "Cliente alterado com sucesso", Toast.LENGTH_SHORT).show();
+            }
+
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

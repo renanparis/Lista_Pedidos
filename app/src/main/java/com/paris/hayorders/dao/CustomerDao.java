@@ -3,6 +3,7 @@ package com.paris.hayorders.dao;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.paris.hayorders.model.Customers;
 
@@ -18,4 +19,7 @@ public interface CustomerDao {
 
     @Insert(onConflict = REPLACE)
     void saveCustomer(Customers customer);
+
+    @Update
+    void updateCutomer(Customers customer);
 }
