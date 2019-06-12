@@ -3,7 +3,8 @@ package com.paris.hayorders.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.widget.Switch;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +24,9 @@ import java.util.List;
 
 public class CustomerListActivity extends AppCompatActivity {
 
+    public static final int REQUEST_CODE_INSERT_CUSTOMER = 1;
+    public static final int REQUEST_CODE_UPDATE_CUSTOMER = 2;
+    public static final String KEY_UPDATE_CUSTOMER = "update_customer";
     private CustomerDao dao;
     private CustomersRecyclerAdapter adapter;
 
@@ -44,44 +48,52 @@ public class CustomerListActivity extends AppCompatActivity {
         customerList.setLayoutManager(layoutManager);
         adapter = new CustomersRecyclerAdapter(customers, this);
         customerList.setAdapter(adapter);
+        configContextMenuListener();
+    }
+
+    private void configContextMenuListener() {
+        adapter.setOnMenuItemClickListener((item, customer, position) -> {
+
+            switch (item.getItemId()){
+                case 1:
+                    Intent goToUpdateCustomerForm = new Intent(this, CustomerForm.class);
+                    goToUpdateCustomerForm.putExtra(KEY_UPDATE_CUSTOMER, customer);
+                    startActivityForResult(goToUpdateCustomerForm, REQUEST_CODE_UPDATE_CUSTOMER);
+            }
+
+
+
+
+        });
     }
 
     private void configList() {
 
-        new SearchAllCustomers(dao, new SearchAllCustomers.ListCustomersFoundListener() {
-            @Override
-            public void ListFound(List<Customers> customers) {
-
-                configRecyclerAdapter(customers);
-
-            }
-        }).execute();
+        new SearchAllCustomers(dao, this::configRecyclerAdapter).execute();
     }
 
     private void configFabAddCustomer() {
-        FloatingActionButton addCutomer = findViewById(R.id.fab_add_cutomers);
-        addCutomer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent goToForm = new Intent(CustomerListActivity.this, CustomerForm.class);
-                startActivityForResult(goToForm, 1);
-            }
+        FloatingActionButton addCustomer = findViewById(R.id.fab_add_cutomers);
+        addCustomer.setOnClickListener(v -> {
+            Intent goToForm = new Intent(CustomerListActivity.this, CustomerForm.class);
+            startActivityForResult(goToForm, REQUEST_CODE_INSERT_CUSTOMER);
         });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data.hasExtra("insert_customer")){
+        if (requestCode == REQUEST_CODE_INSERT_CUSTOMER && resultCode == Activity.RESULT_OK && data.hasExtra("insert_customer")) {
 
             Customers customerReceived = data.getParcelableExtra("insert_customer");
 
-            new SaveCustomerTask(dao, customerReceived, this::finish).execute();
+            new SaveCustomerTask(dao, customerReceived).execute();
 
             adapter.insertCustomer(customerReceived);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
 }
 
 

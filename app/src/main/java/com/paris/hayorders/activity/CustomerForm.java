@@ -3,7 +3,6 @@ package com.paris.hayorders.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -21,6 +20,7 @@ import java.util.List;
 
 public class CustomerForm extends AppCompatActivity {
 
+    public static final String KEY_NEW_CUSTOMER = "insert_customer";
     private List<FormFieldValidator> validators = new ArrayList<>();
     private CustomerDao dao;
     private EditText fieldCity;
@@ -38,24 +38,21 @@ public class CustomerForm extends AppCompatActivity {
 
     private void configButtonSaveCustomer() {
         Button btnSaveCustomer = findViewById(R.id.form_btn_save_customer);
-        btnSaveCustomer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btnSaveCustomer.setOnClickListener(v -> {
 
-                if (validFields()) {
-                    Customers customerCreated = createCustomer();
-                    returnCustomerCreated(customerCreated);
-                    finish();
-
-                }
+            if (validFields()) {
+                Customers customerCreated = createCustomer();
+                returnCustomerCreated(customerCreated);
+                finish();
 
             }
+
         });
     }
 
     private void returnCustomerCreated(Customers customerCreated) {
         Intent returnResult = new Intent();
-        returnResult.putExtra("insert_customer", customerCreated);
+        returnResult.putExtra(KEY_NEW_CUSTOMER, customerCreated);
         setResult(Activity.RESULT_OK, returnResult);
     }
 
@@ -99,6 +96,7 @@ public class CustomerForm extends AppCompatActivity {
         EditText field = inputLayout.getEditText();
         final FormFieldValidator validator = new FormFieldValidator(inputLayout);
         validators.add(validator);
+        assert field != null;
         field.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
 

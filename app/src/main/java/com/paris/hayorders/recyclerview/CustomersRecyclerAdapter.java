@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.paris.hayorders.R;
 import com.paris.hayorders.model.Customers;
+import com.paris.hayorders.recyclerview.listener.OnMenuItemClickListener;
 
 import java.util.List;
 
@@ -17,10 +18,15 @@ public class CustomersRecyclerAdapter extends RecyclerView.Adapter<CustomersView
 
     private List<Customers> customers;
     private Context context;
+    private OnMenuItemClickListener onMenuItemClickListener;
 
     public CustomersRecyclerAdapter(List<Customers> customers, Context context) {
         this.context = context;
         this.customers = customers;
+    }
+
+    public void setOnMenuItemClickListener(OnMenuItemClickListener onMenuItemClickListener) {
+        this.onMenuItemClickListener = onMenuItemClickListener;
     }
 
     @NonNull
@@ -29,7 +35,7 @@ public class CustomersRecyclerAdapter extends RecyclerView.Adapter<CustomersView
 
         View view = LayoutInflater.from(context).inflate(R.layout.item_list_customers, parent, false);
 
-        return new CustomersViewHolderAdapter(view);
+        return new CustomersViewHolderAdapter(view, onMenuItemClickListener);
     }
 
     @Override
