@@ -83,13 +83,14 @@ public class CustomerListActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
-        if (requestCode == REQUEST_CODE_INSERT_CUSTOMER && resultCode == Activity.RESULT_OK && data.hasExtra("insert_customer")) {
+        if (requestCode == REQUEST_CODE_INSERT_CUSTOMER && resultCode == Activity.RESULT_OK && data.hasExtra("result_form_customer")) {
 
-            Customers newCustomerReceived = data.getParcelableExtra("insert_customer");
+            Customers newCustomerReceived = data.getParcelableExtra("result_form_customer");
 
             new SaveCustomerTask(dao, newCustomerReceived).execute();
 
             adapter.insertCustomer(newCustomerReceived);
+            Toast.makeText(this, "Cliente criado com sucesso" + newCustomerReceived.getId(), Toast.LENGTH_SHORT).show();
         }
 
         if (requestCode == REQUEST_CODE_UPDATE_CUSTOMER && resultCode == Activity.RESULT_OK && data.hasExtra("result_form_customer")) {

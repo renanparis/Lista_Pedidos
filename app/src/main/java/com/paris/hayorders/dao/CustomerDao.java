@@ -21,5 +21,5 @@ public interface CustomerDao {
     void saveCustomer(Customers customer);
 
     @Update
-    void updateCutomer(Customers customer);
+    void updateCustomer(Customers customer);
 }

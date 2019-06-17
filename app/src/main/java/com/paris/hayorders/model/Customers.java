@@ -10,7 +10,7 @@ import androidx.room.PrimaryKey;
 public class Customers implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private int id = 0;
     private String name;
     private String city;
     private long order;
