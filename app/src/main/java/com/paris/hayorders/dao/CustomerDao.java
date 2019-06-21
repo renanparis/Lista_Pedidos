@@ -18,7 +18,7 @@ public interface CustomerDao {
     List<Customers> searchAllCustomers();
 
     @Insert(onConflict = REPLACE)
-    void saveCustomer(Customers customer);
+    Long saveCustomer(Customers customer);
 
     @Update
     void updateCustomer(Customers customer);

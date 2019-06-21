@@ -3,7 +3,6 @@ package com.paris.hayorders.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -31,6 +30,7 @@ public class CustomerListActivity extends AppCompatActivity {
     public static final String KEY_POSITION = "position";
     private CustomerDao dao;
     private CustomersRecyclerAdapter adapter;
+    private Customers customer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,12 +85,14 @@ public class CustomerListActivity extends AppCompatActivity {
 
         if (requestCode == REQUEST_CODE_INSERT_CUSTOMER && resultCode == Activity.RESULT_OK && data.hasExtra("result_form_customer")) {
 
-            Customers newCustomerReceived = data.getParcelableExtra("result_form_customer");
+            customer = data.getParcelableExtra("result_form_customer");
 
-            new SaveCustomerTask(dao, newCustomerReceived).execute();
+            new SaveCustomerTask(dao, customer).execute();
 
-            adapter.insertCustomer(newCustomerReceived);
-            Toast.makeText(this, "Cliente criado com sucesso" + newCustomerReceived.getId(), Toast.LENGTH_SHORT).show();
+            adapter.insertCustomer(customer);
+            Toast.makeText(CustomerListActivity.this,
+                    "Cliente criado com sucesso" + customer.getId(), Toast.LENGTH_SHORT).show();
+
         }
 
         if (requestCode == REQUEST_CODE_UPDATE_CUSTOMER && resultCode == Activity.RESULT_OK && data.hasExtra("result_form_customer")) {

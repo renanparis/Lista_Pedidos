@@ -21,7 +21,6 @@ public class SaveCustomerTask extends AsyncTask<Void, Void, Void> {
 
         dao.saveCustomer(customer);
 
-
         return null;
     }
 

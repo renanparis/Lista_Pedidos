@@ -10,14 +10,14 @@ import androidx.room.PrimaryKey;
 public class Customers implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
-    private int id = 0;
+    private long id = 0;
     private String name;
     private String city;
     private long order;
 
 
     public Customers(Parcel in) {
-        id = in.readInt();
+        id = in.readLong();
         name = in.readString();
         city = in.readString();
         order = in.readLong();
@@ -38,11 +38,11 @@ public class Customers implements Parcelable {
     public Customers() {
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -77,7 +77,7 @@ public class Customers implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
+        dest.writeLong(id);
         dest.writeString(name);
         dest.writeString(city);
         dest.writeLong(order);
