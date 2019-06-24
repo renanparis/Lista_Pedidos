@@ -30,7 +30,6 @@ public class CustomerListActivity extends AppCompatActivity {
     public static final String KEY_POSITION = "position";
     private CustomerDao dao;
     private CustomersRecyclerAdapter adapter;
-    private Customers customer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +82,7 @@ public class CustomerListActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
+        Customers customer;
         if (requestCode == REQUEST_CODE_INSERT_CUSTOMER && resultCode == Activity.RESULT_OK && data.hasExtra("result_form_customer")) {
 
             customer = data.getParcelableExtra("result_form_customer");
@@ -98,12 +98,12 @@ public class CustomerListActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE_UPDATE_CUSTOMER && resultCode == Activity.RESULT_OK && data.hasExtra("result_form_customer")) {
 
 
-            Customers updateCustomerReceived = data.getParcelableExtra(KEY_UPDATE_CUSTOMER);
+            customer = data.getParcelableExtra("result_form_customer");
             int positionReceived = data.getIntExtra(KEY_POSITION, -1);
             if (positionReceived > -1){
 
-                new UpdateCustomerTask(dao, updateCustomerReceived).execute();
-                adapter.update(updateCustomerReceived, positionReceived);
+                new UpdateCustomerTask(dao, customer).execute();
+                adapter.update(customer, positionReceived);
                 Toast.makeText(this, "Cliente alterado com sucesso", Toast.LENGTH_SHORT).show();
             }
 
