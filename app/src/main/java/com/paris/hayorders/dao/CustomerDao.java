@@ -1,6 +1,7 @@
 package com.paris.hayorders.dao;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
@@ -22,4 +23,7 @@ public interface CustomerDao {
 
     @Update
     void updateCustomer(Customers customer);
+
+    @Delete
+    void remove(Customers customer);
 }

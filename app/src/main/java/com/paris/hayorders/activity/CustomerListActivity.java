@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.paris.hayorders.R;
+import com.paris.hayorders.activity.Fragments.DeleteCustomersDialogFragment;
 import com.paris.hayorders.asynctask.SaveCustomerTask;
 import com.paris.hayorders.asynctask.SearchAllCustomers;
 import com.paris.hayorders.asynctask.UpdateCustomerTask;
@@ -26,6 +27,7 @@ import static com.paris.hayorders.activity.ConstantsActivity.INVALID_VALUE;
 import static com.paris.hayorders.activity.ConstantsActivity.KEY_POSITION;
 import static com.paris.hayorders.activity.ConstantsActivity.KEY_RESULT_FORM;
 import static com.paris.hayorders.activity.ConstantsActivity.KEY_UPDATE_CUSTOMER;
+import static com.paris.hayorders.recyclerview.ConstantsContextMenu.DELETE_ID;
 import static com.paris.hayorders.recyclerview.ConstantsContextMenu.EDIT_ID;
 
 public class CustomerListActivity extends AppCompatActivity {
@@ -66,6 +68,11 @@ public class CustomerListActivity extends AppCompatActivity {
                     goToUpdateCustomerForm.putExtra(KEY_UPDATE_CUSTOMER, customer);
                     goToUpdateCustomerForm.putExtra(KEY_POSITION, position);
                     startActivityForResult(goToUpdateCustomerForm, REQUEST_CODE_UPDATE_CUSTOMER);
+
+                case DELETE_ID:
+                    DeleteCustomersDialogFragment dialogFragment = new DeleteCustomersDialogFragment(dao, customer);
+                    dialogFragment.show(getSupportFragmentManager(), "Delete_Customer");
+                    adapter.remove(position);
             }
 
         });
