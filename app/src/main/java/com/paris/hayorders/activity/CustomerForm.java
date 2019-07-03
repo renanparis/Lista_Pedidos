@@ -16,12 +16,15 @@ import com.paris.hayorders.validator.FormFieldValidator;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.paris.hayorders.activity.ConstantsActivity.INVALID_VALUE;
+import static com.paris.hayorders.activity.ConstantsActivity.KEY_POSITION;
+import static com.paris.hayorders.activity.ConstantsActivity.KEY_RESULT_FORM;
+import static com.paris.hayorders.activity.ConstantsActivity.KEY_UPDATE_CUSTOMER;
+
 public class CustomerForm extends AppCompatActivity {
 
-    public static final String KEY_RESULT_FORM = "result_form_customer";
     public static final String EDIT_TITLE = "Editar Cliente";
     public static final String INSERT_TITLE = "Novo Cliente";
-    public static final int INVALID_POSITION = -1;
     private List<FormFieldValidator> validators = new ArrayList<>();
     private EditText fieldCity;
     private EditText fieldName;
@@ -40,10 +43,10 @@ public class CustomerForm extends AppCompatActivity {
 
     private void loadCustomer() {
         Intent dataReceived = getIntent();
-        if (dataReceived.hasExtra("update_customer")){
+        if (dataReceived.hasExtra(KEY_UPDATE_CUSTOMER)){
             setTitle(EDIT_TITLE);
-            customer = dataReceived.getParcelableExtra("update_customer");
-            positionReceived = dataReceived.getIntExtra("position", INVALID_POSITION);
+            customer = dataReceived.getParcelableExtra(KEY_UPDATE_CUSTOMER);
+            positionReceived = dataReceived.getIntExtra(KEY_POSITION, INVALID_VALUE);
             fillFields();
         }else{
             setTitle(INSERT_TITLE);
@@ -72,7 +75,7 @@ public class CustomerForm extends AppCompatActivity {
     private void returnCustomerCreated(Customers customer) {
         Intent returnResult = new Intent();
         returnResult.putExtra(KEY_RESULT_FORM, customer);
-        returnResult.putExtra("position", positionReceived);
+        returnResult.putExtra(KEY_POSITION, positionReceived);
         setResult(Activity.RESULT_OK, returnResult);
     }
 

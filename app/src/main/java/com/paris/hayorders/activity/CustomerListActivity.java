@@ -22,14 +22,18 @@ import com.paris.hayorders.recyclerview.CustomersRecyclerAdapter;
 
 import java.util.List;
 
+import static com.paris.hayorders.activity.ConstantsActivity.INVALID_VALUE;
+import static com.paris.hayorders.activity.ConstantsActivity.KEY_POSITION;
+import static com.paris.hayorders.activity.ConstantsActivity.KEY_RESULT_FORM;
+import static com.paris.hayorders.activity.ConstantsActivity.KEY_UPDATE_CUSTOMER;
+
 public class CustomerListActivity extends AppCompatActivity {
 
     public static final int REQUEST_CODE_INSERT_CUSTOMER = 1;
     public static final int REQUEST_CODE_UPDATE_CUSTOMER = 2;
-    public static final String KEY_UPDATE_CUSTOMER = "update_customer";
-    public static final String KEY_POSITION = "position";
     private CustomerDao dao;
     private CustomersRecyclerAdapter adapter;
+    private Customers customer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,25 +86,24 @@ public class CustomerListActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
-        Customers customer;
-        if (requestCode == REQUEST_CODE_INSERT_CUSTOMER && resultCode == Activity.RESULT_OK && data.hasExtra("result_form_customer")) {
+        if (requestCode == REQUEST_CODE_INSERT_CUSTOMER && resultCode == Activity.RESULT_OK && data.hasExtra(KEY_RESULT_FORM)) {
 
-            customer = data.getParcelableExtra("result_form_customer");
+            customer = data.getParcelableExtra(KEY_RESULT_FORM);
 
             new SaveCustomerTask(dao, customer).execute();
 
             adapter.insertCustomer(customer);
             Toast.makeText(CustomerListActivity.this,
-                    "Cliente criado com sucesso" + customer.getId(), Toast.LENGTH_SHORT).show();
+                    "Cliente criado com sucesso", Toast.LENGTH_SHORT).show();
 
         }
 
-        if (requestCode == REQUEST_CODE_UPDATE_CUSTOMER && resultCode == Activity.RESULT_OK && data.hasExtra("result_form_customer")) {
+        if (requestCode == REQUEST_CODE_UPDATE_CUSTOMER && resultCode == Activity.RESULT_OK && data.hasExtra(KEY_RESULT_FORM)) {
 
 
-            customer = data.getParcelableExtra("result_form_customer");
-            int positionReceived = data.getIntExtra(KEY_POSITION, -1);
-            if (positionReceived > -1){
+            customer = data.getParcelableExtra(KEY_RESULT_FORM);
+            int positionReceived = data.getIntExtra(KEY_POSITION, INVALID_VALUE);
+            if (positionReceived > INVALID_VALUE) {
 
                 new UpdateCustomerTask(dao, customer).execute();
                 adapter.update(customer, positionReceived);
