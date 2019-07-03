@@ -13,13 +13,14 @@ import com.paris.hayorders.R;
 import com.paris.hayorders.model.Customers;
 import com.paris.hayorders.recyclerview.listener.OnMenuItemClickListener;
 
+import static com.paris.hayorders.recyclerview.ConstantsContextMenu.DELETE_ID;
+import static com.paris.hayorders.recyclerview.ConstantsContextMenu.EDIT_ID;
+
 class CustomersViewHolderAdapter extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener{
     private static final String EDIT = "Editar";
-    private static final int DELETE_ID = 2;
-    private static final int EDIT_ID = 1;
-    public static final String DELETE = "Deletar";
-    public static final int EDIT_ORDER = 1;
-    public static final int DELETE_ORDER = 2;
+    private static final String DELETE = "Deletar";
+    private static final int EDIT_ORDER = 1;
+    private static final int DELETE_ORDER = 2;
     private final TextView name;
     private final TextView city;
     private final TextView order;

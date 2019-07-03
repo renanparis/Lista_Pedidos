@@ -26,6 +26,7 @@ import static com.paris.hayorders.activity.ConstantsActivity.INVALID_VALUE;
 import static com.paris.hayorders.activity.ConstantsActivity.KEY_POSITION;
 import static com.paris.hayorders.activity.ConstantsActivity.KEY_RESULT_FORM;
 import static com.paris.hayorders.activity.ConstantsActivity.KEY_UPDATE_CUSTOMER;
+import static com.paris.hayorders.recyclerview.ConstantsContextMenu.EDIT_ID;
 
 public class CustomerListActivity extends AppCompatActivity {
 
@@ -60,7 +61,7 @@ public class CustomerListActivity extends AppCompatActivity {
         adapter.setOnMenuItemClickListener((item, customer, position) -> {
 
             switch (item.getItemId()) {
-                case 1:
+                case EDIT_ID:
                     Intent goToUpdateCustomerForm = new Intent(this, CustomerForm.class);
                     goToUpdateCustomerForm.putExtra(KEY_UPDATE_CUSTOMER, customer);
                     goToUpdateCustomerForm.putExtra(KEY_POSITION, position);
