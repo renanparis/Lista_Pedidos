@@ -5,24 +5,22 @@ import android.os.AsyncTask;
 import com.paris.hayorders.dao.CustomerDao;
 import com.paris.hayorders.model.Customers;
 
-import java.util.AbstractCollection;
-
 public class RemoveTask extends AsyncTask<Void, Void, Void> {
 
 
     private CustomerDao dao;
-    private Customers cutomer;
+    private Customers customer;
 
     public RemoveTask(CustomerDao dao, Customers customer) {
         this.dao = dao;
-        this.cutomer = customer;
+        this.customer = customer;
 
     }
 
     @Override
     protected Void doInBackground(Void... voids) {
 
-        dao.remove(cutomer);
+        dao.remove(customer);
         return null;
     }
 }

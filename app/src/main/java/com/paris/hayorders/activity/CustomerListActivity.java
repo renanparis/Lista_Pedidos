@@ -1,18 +1,20 @@
 package com.paris.hayorders.activity;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.paris.hayorders.R;
-import com.paris.hayorders.activity.Fragments.DeleteCustomersDialogFragment;
+import com.paris.hayorders.asynctask.RemoveTask;
 import com.paris.hayorders.asynctask.SaveCustomerTask;
 import com.paris.hayorders.asynctask.SearchAllCustomers;
 import com.paris.hayorders.asynctask.UpdateCustomerTask;
@@ -68,14 +70,31 @@ public class CustomerListActivity extends AppCompatActivity {
                     goToUpdateCustomerForm.putExtra(KEY_UPDATE_CUSTOMER, customer);
                     goToUpdateCustomerForm.putExtra(KEY_POSITION, position);
                     startActivityForResult(goToUpdateCustomerForm, REQUEST_CODE_UPDATE_CUSTOMER);
+                    break;
 
                 case DELETE_ID:
-                    DeleteCustomersDialogFragment dialogFragment = new DeleteCustomersDialogFragment(dao, customer);
-                    dialogFragment.show(getSupportFragmentManager(), "Delete_Customer");
-                    adapter.remove(position);
+                    showAlertDialog(customer, position);
             }
 
         });
+    }
+
+    private void showAlertDialog(Customers customer, int position) {
+        new AlertDialog.Builder(this).setTitle("Deletar Cliente")
+                .setMessage("Deseja deletar cliente").setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                adapter.remove(position);
+                new RemoveTask(dao, customer).execute();
+                Toast.makeText(CustomerListActivity.this, "Cliente deletado com sucesso",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }).setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).show();
     }
 
     private void configList() {
