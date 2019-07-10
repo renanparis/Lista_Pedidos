@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.paris.hayorders.R;
 import com.paris.hayorders.model.Customers;
+import com.paris.hayorders.recyclerview.listener.OnItemClickListener;
 import com.paris.hayorders.recyclerview.listener.OnMenuItemClickListener;
 
 import java.util.Collections;
@@ -20,10 +21,16 @@ public class CustomersRecyclerAdapter extends RecyclerView.Adapter<CustomersView
     private List<Customers> customers;
     private Context context;
     private OnMenuItemClickListener onMenuItemClickListener;
+    private OnItemClickListener listener;
+
 
     public CustomersRecyclerAdapter(List<Customers> customers, Context context) {
         this.context = context;
         this.customers = customers;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.listener = onItemClickListener;
     }
 
     public void setOnMenuItemClickListener(OnMenuItemClickListener onMenuItemClickListener) {
@@ -36,7 +43,7 @@ public class CustomersRecyclerAdapter extends RecyclerView.Adapter<CustomersView
 
         View view = LayoutInflater.from(context).inflate(R.layout.item_list_customers, parent, false);
 
-        return new CustomersViewHolderAdapter(view, onMenuItemClickListener);
+        return new CustomersViewHolderAdapter(view, onMenuItemClickListener, listener);
     }
 
     @Override
@@ -72,5 +79,20 @@ public class CustomersRecyclerAdapter extends RecyclerView.Adapter<CustomersView
 
     private void sortListByName(){
         Collections.sort(customers);
+    }
+
+    public void insertOrder(Customers customer) {
+        int position;
+
+        for (int i = 0; i <customers.size(); i++){
+            if (customers.get(i).getId() == customer.getId()){
+                position = i;
+                customers.set(position, customer);
+                notifyItemChanged(position);
+                return;
+            }
+
+        }
+
     }
 }

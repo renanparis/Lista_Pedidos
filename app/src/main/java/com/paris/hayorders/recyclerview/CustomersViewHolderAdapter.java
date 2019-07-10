@@ -11,12 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.paris.hayorders.R;
 import com.paris.hayorders.model.Customers;
+import com.paris.hayorders.recyclerview.listener.OnItemClickListener;
 import com.paris.hayorders.recyclerview.listener.OnMenuItemClickListener;
 
 import static com.paris.hayorders.recyclerview.ConstantsContextMenu.DELETE_ID;
 import static com.paris.hayorders.recyclerview.ConstantsContextMenu.EDIT_ID;
 
-class CustomersViewHolderAdapter extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener{
+class CustomersViewHolderAdapter extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
     private static final String EDIT = "Editar";
     private static final String DELETE = "Deletar";
     private static final int EDIT_ORDER = 1;
@@ -26,14 +27,23 @@ class CustomersViewHolderAdapter extends RecyclerView.ViewHolder implements View
     private final TextView order;
     private OnMenuItemClickListener onMenuItemClickListener;
     private Customers customer;
+    private OnItemClickListener onItemClick;
 
-    CustomersViewHolderAdapter(@NonNull View itemView, OnMenuItemClickListener onMenuItemClickListener) {
+
+    CustomersViewHolderAdapter(@NonNull View itemView, OnMenuItemClickListener onMenuItemClickListener, OnItemClickListener onItemClick) {
         super(itemView);
         name = itemView.findViewById(R.id.item_list_name);
         city = itemView.findViewById(R.id.item_list_city);
         order = itemView.findViewById(R.id.item_list_order);
         this.onMenuItemClickListener = onMenuItemClickListener;
+        this.onItemClick = onItemClick;
         itemView.setOnCreateContextMenuListener(this);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemClick.onItemClick(customer);
+            }
+        });
 
     }
 
@@ -64,4 +74,5 @@ class CustomersViewHolderAdapter extends RecyclerView.ViewHolder implements View
         });
 
     }
-}
+
+  }

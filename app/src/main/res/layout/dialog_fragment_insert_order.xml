@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:text="Insira seu pedido"
-        android:textSize="16sp"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -41,6 +42,7 @@
         app:layout_constraintTop_toBottomOf="@id/dialog_fragment_field_order"
         app:layout_constraintEnd_toStartOf="@+id/dialog_fragment_confirm"
         android:text="Cancelar"
+        android:textColor="#8A0808"
         android:textSize="16sp"
         android:layout_margin="10dp"/>
 
@@ -56,4 +58,4 @@
         android:layout_margin="10dp"/>
 
 
-</>
+</androidx.constraintlayout.widget.ConstraintLayout>

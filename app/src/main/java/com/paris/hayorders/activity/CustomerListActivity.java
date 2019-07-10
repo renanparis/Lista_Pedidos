@@ -8,11 +8,13 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.paris.hayorders.R;
+import com.paris.hayorders.activity.Fragments.DialogInsertOrder;
 import com.paris.hayorders.asynctask.RemoveTask;
 import com.paris.hayorders.asynctask.SaveCustomerTask;
 import com.paris.hayorders.asynctask.SearchAllCustomers;
@@ -21,6 +23,7 @@ import com.paris.hayorders.dao.CustomerDao;
 import com.paris.hayorders.database.CustomerDatabase;
 import com.paris.hayorders.model.Customers;
 import com.paris.hayorders.recyclerview.CustomersRecyclerAdapter;
+import com.paris.hayorders.recyclerview.listener.OnItemClickListener;
 
 import java.util.List;
 
@@ -31,13 +34,23 @@ import static com.paris.hayorders.activity.ConstantsActivity.KEY_UPDATE_CUSTOMER
 import static com.paris.hayorders.recyclerview.ConstantsContextMenu.DELETE_ID;
 import static com.paris.hayorders.recyclerview.ConstantsContextMenu.EDIT_ID;
 
-public class CustomerListActivity extends AppCompatActivity {
+public class CustomerListActivity extends AppCompatActivity implements DialogInsertOrder.InputOrderListener {
 
     public static final int REQUEST_CODE_INSERT_CUSTOMER = 1;
     public static final int REQUEST_CODE_UPDATE_CUSTOMER = 2;
+    public static final String INSERT_ORDER_DIALOG = "InsertOrderDialog";
     private CustomerDao dao;
     private CustomersRecyclerAdapter adapter;
     private Customers customer;
+
+    @Override
+    public void sendInputOrder(String input) {
+        customer.setOrder(Long.parseLong(input));
+        new UpdateCustomerTask(dao,customer);
+        adapter.insertOrder(customer);
+
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +71,25 @@ public class CustomerListActivity extends AppCompatActivity {
         adapter = new CustomersRecyclerAdapter(customers, this);
         customerList.setAdapter(adapter);
         configContextMenuListener();
+        adapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(Customers customer) {
+                showInsertOrderDialog();
+                getCustomerClicked(customer);
+            }
+        });
+    }
+
+    private void getCustomerClicked(Customers customerClicked) {
+
+        customer = customerClicked;
+
+    }
+
+    private void showInsertOrderDialog() {
+        DialogFragment dialogFragment = new DialogInsertOrder();
+        dialogFragment.show(getSupportFragmentManager(), INSERT_ORDER_DIALOG);
+
     }
 
     private void configContextMenuListener() {
@@ -139,6 +171,7 @@ public class CustomerListActivity extends AppCompatActivity {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
 
 }
 
