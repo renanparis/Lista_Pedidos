@@ -17,45 +17,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
+    <EditText
         android:id="@+id/dialog_fragment_field_order"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dialog_fragment_title">
+        app:layout_constraintTop_toBottomOf="@id/dialog_fragment_title"
+        android:hint="Número de fardos"
+        android:inputType="number">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Número de fardos"
-            android:inputType="number" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <TextView
-        android:id="@+id/dialog_fragment_cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@+id/dialog_fragment_field_order"
-        app:layout_constraintTop_toBottomOf="@id/dialog_fragment_field_order"
-        app:layout_constraintEnd_toStartOf="@+id/dialog_fragment_confirm"
-        android:text="Cancelar"
-        android:textColor="#8A0808"
-        android:textSize="16sp"
-        android:layout_margin="10dp"/>
-
-    <TextView
-        android:id="@+id/dialog_fragment_confirm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@+id/dialog_fragment_cancel"
-        app:layout_constraintEnd_toEndOf="@+id/dialog_fragment_field_order"
-        app:layout_constraintTop_toBottomOf="@+id/dialog_fragment_field_order"
-        android:text="Confirmar"
-        android:textSize="16sp"
-        android:layout_margin="10dp"/>
-
+    </EditText>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
