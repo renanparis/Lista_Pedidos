@@ -16,7 +16,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.paris.hayorders.R;
 
-public class DialogInsertOrder extends DialogFragment{
+public class DialogInsertOrderFragment extends DialogFragment{
 
     private EditText fieldOrder;
     private InputOrderListener listener;

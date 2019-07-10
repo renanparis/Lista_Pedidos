@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.paris.hayorders.R;
-import com.paris.hayorders.activity.Fragments.DialogInsertOrder;
+import com.paris.hayorders.activity.Fragments.DialogInsertOrderFragment;
 import com.paris.hayorders.asynctask.RemoveTask;
 import com.paris.hayorders.asynctask.SaveCustomerTask;
 import com.paris.hayorders.asynctask.SearchAllCustomers;
@@ -34,28 +37,22 @@ import static com.paris.hayorders.activity.ConstantsActivity.KEY_UPDATE_CUSTOMER
 import static com.paris.hayorders.recyclerview.ConstantsContextMenu.DELETE_ID;
 import static com.paris.hayorders.recyclerview.ConstantsContextMenu.EDIT_ID;
 
-public class CustomerListActivity extends AppCompatActivity implements DialogInsertOrder.InputOrderListener {
+public class CustomerListActivity extends AppCompatActivity implements DialogInsertOrderFragment.InputOrderListener {
 
     public static final int REQUEST_CODE_INSERT_CUSTOMER = 1;
     public static final int REQUEST_CODE_UPDATE_CUSTOMER = 2;
     public static final String INSERT_ORDER_DIALOG = "InsertOrderDialog";
+    public static final String TITLE_ACTIVITY = "Lista de clientes";
     private CustomerDao dao;
     private CustomersRecyclerAdapter adapter;
     private Customers customer;
 
-    @Override
-    public void sendInputOrder(String input) {
-        customer.setOrder(Long.parseLong(input));
-        new UpdateCustomerTask(dao,customer);
-        adapter.insertOrder(customer);
-
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_list);
+        setTitle(TITLE_ACTIVITY);
         CustomerDatabase db = CustomerDatabase.getInstance(this);
         dao = db.customerDao();
         configList();
@@ -63,6 +60,18 @@ public class CustomerListActivity extends AppCompatActivity implements DialogIns
 
     }
 
+    @Override
+    public void sendInputOrder(String input) {
+
+        if (input.equals("")) {
+            input = String.valueOf(0);
+        }
+        customer.setOrder(Long.parseLong(input));
+        new UpdateCustomerTask(dao, customer).execute();
+        adapter.insertOrder(customer);
+
+
+    }
 
     private void configRecyclerAdapter(List<Customers> customers) {
         RecyclerView customerList = findViewById(R.id.customer_list);
@@ -87,9 +96,54 @@ public class CustomerListActivity extends AppCompatActivity implements DialogIns
     }
 
     private void showInsertOrderDialog() {
-        DialogFragment dialogFragment = new DialogInsertOrder();
+        DialogFragment dialogFragment = new DialogInsertOrderFragment();
         dialogFragment.show(getSupportFragmentManager(), INSERT_ORDER_DIALOG);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_customers_activity_options, menu);
+        return super.onCreateOptionsMenu(menu);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.menu_delete_all_orders:
+                deleteAllOrders();
+
+            case R.id.menu_list_order:
+
+                goToListOrders();
+
+        }
+
+        return super.onOptionsItemSelected(item);
+
+    }
+
+    private void goToListOrders() {
+        Intent goToListOrders = new Intent(this, ListOrdersActivity.class);
+        startActivity(goToListOrders);
+    }
+
+    private void deleteAllOrders() {
+        new SearchAllCustomers(dao, new SearchAllCustomers.ListCustomersFoundListener() {
+            @Override
+            public void ListFound(List<Customers> customers) {
+                for (Customers customer:
+                     customers) {
+                    customer.setOrder(0);
+                    new UpdateCustomerTask(dao, customer).execute();
+                    adapter.insertOrder(customer);
+                }
+            }
+        }).execute();
     }
 
     private void configContextMenuListener() {
