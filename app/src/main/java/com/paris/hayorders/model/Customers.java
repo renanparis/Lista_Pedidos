@@ -7,7 +7,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class Customers implements Parcelable {
+public class Customers implements Parcelable, Comparable<Customers> {
 
     @PrimaryKey(autoGenerate = true)
     private long id = 0;
@@ -81,5 +81,10 @@ public class Customers implements Parcelable {
         dest.writeString(name);
         dest.writeString(city);
         dest.writeLong(order);
+    }
+
+    @Override
+    public int compareTo(Customers customer) {
+        return this.name.compareToIgnoreCase(customer.getName());
     }
 }

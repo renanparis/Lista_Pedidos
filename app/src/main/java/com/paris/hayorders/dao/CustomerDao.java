@@ -15,7 +15,7 @@ import static androidx.room.OnConflictStrategy.REPLACE;
 @Dao
 public interface CustomerDao {
 
-    @Query("SELECT * FROM customers")
+    @Query("SELECT * FROM customers ORDER BY name COLLATE NOCASE")
     List<Customers> searchAllCustomers();
 
     @Insert(onConflict = REPLACE)

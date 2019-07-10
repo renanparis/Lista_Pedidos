@@ -12,6 +12,7 @@ import com.paris.hayorders.R;
 import com.paris.hayorders.model.Customers;
 import com.paris.hayorders.recyclerview.listener.OnMenuItemClickListener;
 
+import java.util.Collections;
 import java.util.List;
 
 public class CustomersRecyclerAdapter extends RecyclerView.Adapter<CustomersViewHolderAdapter> {
@@ -54,16 +55,22 @@ public class CustomersRecyclerAdapter extends RecyclerView.Adapter<CustomersView
 
     public void insertCustomer(Customers customer) {
         customers.add(customer);
+        sortListByName();
         notifyDataSetChanged();
     }
 
     public void update(Customers customer, int position) {
         customers.set(position, customer);
+        sortListByName();
         notifyDataSetChanged();
     }
 
     public void remove(int position) {
         customers.remove(position);
         notifyItemRangeRemoved(position, getItemCount());
+    }
+
+    private void sortListByName(){
+        Collections.sort(customers);
     }
 }
