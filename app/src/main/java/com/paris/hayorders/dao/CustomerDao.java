@@ -26,4 +26,7 @@ public interface CustomerDao {
 
     @Delete
     void remove(Customers customer);
+
+    @Query("SELECT * FROM customers WHERE `order` != 0 ORDER BY city COLLATE NOCASE ")
+    List<Customers> searchAllOrders();
 }

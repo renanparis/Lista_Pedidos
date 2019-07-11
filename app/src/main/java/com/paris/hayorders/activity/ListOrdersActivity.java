@@ -1,16 +1,75 @@
 package com.paris.hayorders.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.paris.hayorders.R;
+import com.paris.hayorders.asynctask.SearchAllOrders;
+import com.paris.hayorders.dao.CustomerDao;
+import com.paris.hayorders.database.CustomerDatabase;
+import com.paris.hayorders.model.Customers;
+import com.paris.hayorders.recyclerview.ListOrderRecyclerAdapter;
+import com.paris.hayorders.recyclerview.helper.callback.ListOrdersCallback;
+
+import java.util.List;
 
 public class ListOrdersActivity extends AppCompatActivity {
+
+    public static final String TITLE_LIST_ORDERS = "Lista de pedidos";
+    private CustomerDao dao;
+    private ListOrderRecyclerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_orders);
+        setTitle(TITLE_LIST_ORDERS);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        CustomerDatabase db = CustomerDatabase.getInstance(this);
+        dao = db.customerDao();
+        configListOrders();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home){
+            startActivity(new Intent(this, CustomerListActivity.class));
+            finishAffinity();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void configListOrders() {
+        new SearchAllOrders(dao, new SearchAllOrders.FinishSearchOrders() {
+            @Override
+            public void listOrdersFound(List<Customers> list) {
+                configAdapter(list);
+            }
+        }).execute();
+    }
+
+    private void configAdapter(List<Customers> list) {
+        RecyclerView recycler = findViewById(R.id.recycler_order_list);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(ListOrdersActivity.this);
+        recycler.setLayoutManager(layoutManager);
+        adapter = new ListOrderRecyclerAdapter(list, ListOrdersActivity.this);
+        recycler.setAdapter(adapter);
+        configItemTouchHelper(recycler);
+
+    }
+
+    private void configItemTouchHelper(RecyclerView recycler) {
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ListOrdersCallback(adapter));
+        itemTouchHelper.attachToRecyclerView(recycler);
     }
 }
+
+

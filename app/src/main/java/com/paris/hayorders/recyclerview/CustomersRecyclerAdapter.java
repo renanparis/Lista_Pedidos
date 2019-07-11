@@ -95,4 +95,6 @@ public class CustomersRecyclerAdapter extends RecyclerView.Adapter<CustomersView
         }
 
     }
+
+
 }

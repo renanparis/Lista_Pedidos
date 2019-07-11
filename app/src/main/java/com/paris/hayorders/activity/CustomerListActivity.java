@@ -116,10 +116,11 @@ public class CustomerListActivity extends AppCompatActivity implements DialogIns
 
             case R.id.menu_delete_all_orders:
                 deleteAllOrders();
+                break;
 
             case R.id.menu_list_order:
-
                 goToListOrders();
+                break;
 
         }
 
