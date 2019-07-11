@@ -37,6 +37,9 @@ public class DialogInsertOrderFragment extends DialogFragment{
 
         fieldOrder = view.findViewById(R.id.dialog_fragment_field_order);
 
+
+
+
         builder.setView(view)
                 .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                     @Override
@@ -53,8 +56,10 @@ public class DialogInsertOrderFragment extends DialogFragment{
             }
         });
 
+        fieldOrder.requestFocus();
 
         return builder.create();
+
     }
 
     @Override
