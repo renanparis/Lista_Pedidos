@@ -191,6 +191,7 @@ public class CustomerListActivity extends AppCompatActivity implements DialogIns
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
+        assert data != null;
         if (requestCode == REQUEST_CODE_INSERT_CUSTOMER && resultCode == Activity.RESULT_OK && data.hasExtra(KEY_RESULT_FORM)) {
 
             customer = data.getParcelableExtra(KEY_RESULT_FORM);
