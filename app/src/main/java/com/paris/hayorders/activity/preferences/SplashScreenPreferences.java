@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 public class SplashScreenPreferences {
 
-    public static final String SPLASH_SCREEN_PREFERENCES = "com.paris.hayorders.activity.preferences.SplashScreenPreferences";
+    private static final String SPLASH_SCREEN_PREFERENCES = "com.paris.hayorders.activity.preferences.SplashScreenPreferences";
     private Context context;
 
     public SplashScreenPreferences(Context context) {
@@ -20,7 +20,7 @@ public class SplashScreenPreferences {
     }
 
     private SharedPreferences getSharedPreferences() {
-        return context.getSharedPreferences(SPLASH_SCREEN_PREFERENCES, context.MODE_PRIVATE);
+        return context.getSharedPreferences(SPLASH_SCREEN_PREFERENCES, Context.MODE_PRIVATE);
     }
 
     public void addNotFirstTime(String key) {
@@ -28,7 +28,7 @@ public class SplashScreenPreferences {
         SharedPreferences preferences = getSharedPreferences();
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(key, true);
-        editor.commit();
+        editor.apply();
 
     }
 }

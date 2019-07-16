@@ -17,10 +17,10 @@ public class ListOrdersCallback extends ItemTouchHelper.Callback {
     @Override
     public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
 
-        int slideCustumer = ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
+        int slideCustomer = ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
         int dragsCustomer = ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT
                 | ItemTouchHelper.DOWN | ItemTouchHelper.UP;
-        return makeMovementFlags(dragsCustomer, slideCustumer);
+        return makeMovementFlags(dragsCustomer, slideCustomer);
     }
 
     @Override

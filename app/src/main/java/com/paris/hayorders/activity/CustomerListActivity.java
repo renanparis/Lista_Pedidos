@@ -1,13 +1,10 @@
 package com.paris.hayorders.activity;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.hardware.input.InputManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -28,7 +25,6 @@ import com.paris.hayorders.dao.CustomerDao;
 import com.paris.hayorders.database.CustomerDatabase;
 import com.paris.hayorders.model.Customers;
 import com.paris.hayorders.recyclerview.CustomersRecyclerAdapter;
-import com.paris.hayorders.recyclerview.listener.OnItemClickListener;
 
 import java.util.List;
 
@@ -82,12 +78,13 @@ public class CustomerListActivity extends AppCompatActivity implements DialogIns
         adapter = new CustomersRecyclerAdapter(customers, this);
         customerList.setAdapter(adapter);
         configContextMenuListener();
-        adapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(Customers customer) {
-                showInsertOrderDialog();
-                getCustomerClicked(customer);
-            }
+        configItemClickListener();
+    }
+
+    private void configItemClickListener() {
+        adapter.setOnItemClickListener(customer -> {
+            showInsertOrderDialog();
+            getCustomerClicked(customer);
         });
     }
 
@@ -136,15 +133,12 @@ public class CustomerListActivity extends AppCompatActivity implements DialogIns
     }
 
     private void deleteAllOrders() {
-        new SearchAllCustomers(dao, new SearchAllCustomers.ListCustomersFoundListener() {
-            @Override
-            public void ListFound(List<Customers> customers) {
-                for (Customers customer:
-                     customers) {
-                    customer.setOrder(0);
-                    new UpdateCustomerTask(dao, customer).execute();
-                    adapter.insertOrder(customer);
-                }
+        new SearchAllCustomers(dao, customers -> {
+            for (Customers customer :
+                    customers) {
+                customer.setOrder(0);
+                new UpdateCustomerTask(dao, customer).execute();
+                adapter.insertOrder(customer);
             }
         }).execute();
     }
@@ -154,10 +148,7 @@ public class CustomerListActivity extends AppCompatActivity implements DialogIns
 
             switch (item.getItemId()) {
                 case EDIT_ID:
-                    Intent goToUpdateCustomerForm = new Intent(this, CustomerForm.class);
-                    goToUpdateCustomerForm.putExtra(KEY_UPDATE_CUSTOMER, customer);
-                    goToUpdateCustomerForm.putExtra(KEY_POSITION, position);
-                    startActivityForResult(goToUpdateCustomerForm, REQUEST_CODE_UPDATE_CUSTOMER);
+                    goToUpdateForm(customer, position);
                     break;
 
                 case DELETE_ID:
@@ -167,22 +158,21 @@ public class CustomerListActivity extends AppCompatActivity implements DialogIns
         });
     }
 
+    private void goToUpdateForm(Customers customer, int position) {
+        Intent goToUpdateCustomerForm = new Intent(this, CustomerForm.class);
+        goToUpdateCustomerForm.putExtra(KEY_UPDATE_CUSTOMER, customer);
+        goToUpdateCustomerForm.putExtra(KEY_POSITION, position);
+        startActivityForResult(goToUpdateCustomerForm, REQUEST_CODE_UPDATE_CUSTOMER);
+    }
+
     private void showAlertDialog(Customers customer, int position) {
         new AlertDialog.Builder(this).setTitle("Deletar Cliente")
-                .setMessage("Deseja deletar cliente").setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                adapter.remove(position);
-                new RemoveTask(dao, customer).execute();
-                Toast.makeText(CustomerListActivity.this, "Cliente deletado com sucesso",
-                        Toast.LENGTH_SHORT).show();
-            }
-        }).setNegativeButton("Não", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        }).show();
+                .setMessage("Deseja deletar cliente").setPositiveButton("Sim", (dialog, which) -> {
+            adapter.remove(position);
+            new RemoveTask(dao, customer).execute();
+            Toast.makeText(CustomerListActivity.this, "Cliente deletado com sucesso",
+                    Toast.LENGTH_SHORT).show();
+        }).setNegativeButton("Não", (dialog, which) -> dialog.dismiss()).show();
     }
 
     private void configList() {

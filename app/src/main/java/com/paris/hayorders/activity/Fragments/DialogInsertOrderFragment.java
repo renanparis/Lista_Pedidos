@@ -16,6 +16,8 @@ import androidx.fragment.app.DialogFragment;
 
 import com.paris.hayorders.R;
 
+import java.util.Objects;
+
 public class DialogInsertOrderFragment extends DialogFragment{
 
     private EditText fieldOrder;
@@ -31,20 +33,17 @@ public class DialogInsertOrderFragment extends DialogFragment{
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        LayoutInflater inflater = getActivity().getLayoutInflater();
+        LayoutInflater inflater = Objects.requireNonNull(getActivity()).getLayoutInflater();
 
         View view = inflater.inflate(R.layout.dialog_fragment_insert_order, null);
 
         fieldOrder = view.findViewById(R.id.dialog_fragment_field_order);
 
-
-
-
         builder.setView(view)
                 .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        getDialog().dismiss();
+                        Objects.requireNonNull(getDialog()).dismiss();
                     }
                 }).setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
             @Override
@@ -63,7 +62,7 @@ public class DialogInsertOrderFragment extends DialogFragment{
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try {
             listener = (InputOrderListener) getActivity();

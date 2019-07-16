@@ -21,7 +21,6 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         preferences = new SplashScreenPreferences(this);
         handler = new Handler();
-
         configSharedPreferences();
     }
 
@@ -37,23 +36,11 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void delayTwoSecond() {
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                goToCustomerActivity();
-            }
-        }, 2000);
+        handler.postDelayed(this::goToCustomerActivity, 2000);
     }
 
     private void delayHalfSecond() {
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                goToCustomerActivity();
-
-            }
-        }, 500);
+        handler.postDelayed(this::goToCustomerActivity, 500);
     }
 
     private void goToCustomerActivity() {

@@ -6,6 +6,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 public class FormFieldValidator {
 
+    public static final String ERROR_TEXT = "Campo Obrigatório";
     private TextInputLayout  inputLayout;
     private EditText field;
 
@@ -19,7 +20,7 @@ public class FormFieldValidator {
 
         String text = field.getText().toString();
         if (text.isEmpty()){
-            inputLayout.setError("Compo Obrigatório");
+            inputLayout.setError(ERROR_TEXT);
             return false;
         }else {
             removeError();

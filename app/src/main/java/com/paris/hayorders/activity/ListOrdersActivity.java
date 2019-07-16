@@ -1,13 +1,13 @@
 package com.paris.hayorders.activity;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.MenuItem;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.MenuItem;
 
 import com.paris.hayorders.R;
 import com.paris.hayorders.asynctask.SearchAllOrders;
@@ -30,30 +30,33 @@ public class ListOrdersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_orders);
         setTitle(TITLE_LIST_ORDERS);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        addAnUpAction();
         CustomerDatabase db = CustomerDatabase.getInstance(this);
         dao = db.customerDao();
         configListOrders();
+    }
+
+    private void addAnUpAction() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home){
-            startActivity(new Intent(this, CustomerListActivity.class));
-            finishAffinity();
+            goToCustomerLIst();
         }
         return super.onOptionsItemSelected(item);
     }
 
+    private void goToCustomerLIst() {
+        startActivity(new Intent(this, CustomerListActivity.class));
+        finishAffinity();
+    }
+
     private void configListOrders() {
-        new SearchAllOrders(dao, new SearchAllOrders.FinishSearchOrders() {
-            @Override
-            public void listOrdersFound(List<Customers> list) {
-                configAdapter(list);
-            }
-        }).execute();
+        new SearchAllOrders(dao, this::configAdapter).execute();
     }
 
     private void configAdapter(List<Customers> list) {

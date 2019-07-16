@@ -13,7 +13,7 @@
         android:layout_width="350dp"
         android:layout_height="350dp"
         android:background="@drawable/logo_transparente"
-        android:contentDescription="logo da fazenda"
+        android:contentDescription="@string/description_image_splash_screen"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"

@@ -8,7 +8,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.SplashActivity"
+        <activity
+            android:name=".activity.SplashActivity"
             android:theme="@style/FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,8 +18,13 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".activity.ListOrdersActivity" />
-        <activity android:name=".activity.CustomerForm" />
+        <activity android:name=".activity.ListOrdersActivity">
+
+        </activity>
+        <activity android:name=".activity.CustomerForm">
+
+        </activity>
+
         <activity android:name=".activity.CustomerListActivity">
 
         </activity>
