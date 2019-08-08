@@ -2,7 +2,7 @@ package com.paris.hayorders.asynctask;
 
 import android.os.AsyncTask;
 
-import com.paris.hayorders.dao.CustomerDao;
+import com.paris.hayorders.database.dao.CustomerDao;
 import com.paris.hayorders.model.Customers;
 
 public class UpdateCustomerTask extends AsyncTask <Void, Void, Void>{

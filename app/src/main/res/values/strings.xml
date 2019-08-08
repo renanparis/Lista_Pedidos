@@ -9,4 +9,6 @@
     <string name="name_field_dialog_order_hay">N° de fardos</string>
     <string name="delete_orders">Deletar todos pedidos</string>
     <string name="create_list_orders">Gerar lista de pedidos</string>
+    <string name="name_title">Fazenda</string>
+    <string name="name_farm">Bons Ventos</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.paris.hayorders.activity;
+package com.paris.hayorders.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,15 +11,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputLayout;
 import com.paris.hayorders.R;
 import com.paris.hayorders.model.Customers;
-import com.paris.hayorders.validator.FormFieldValidator;
+import com.paris.hayorders.ui.validator.FormFieldValidator;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.paris.hayorders.activity.ConstantsActivity.INVALID_VALUE;
-import static com.paris.hayorders.activity.ConstantsActivity.KEY_POSITION;
-import static com.paris.hayorders.activity.ConstantsActivity.KEY_RESULT_FORM;
-import static com.paris.hayorders.activity.ConstantsActivity.KEY_UPDATE_CUSTOMER;
+import static com.paris.hayorders.ui.activity.ConstantsActivity.INVALID_VALUE;
+import static com.paris.hayorders.ui.activity.ConstantsActivity.KEY_POSITION;
+import static com.paris.hayorders.ui.activity.ConstantsActivity.KEY_RESULT_FORM;
+import static com.paris.hayorders.ui.activity.ConstantsActivity.KEY_UPDATE_CUSTOMER;
 
 public class CustomerForm extends AppCompatActivity {
 

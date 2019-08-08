@@ -1,4 +1,4 @@
-package com.paris.hayorders.activity;
+package com.paris.hayorders.ui.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.paris.hayorders.R;
-import com.paris.hayorders.activity.preferences.SplashScreenPreferences;
+import com.paris.hayorders.ui.activity.preferences.SplashScreenPreferences;
 
 public class SplashActivity extends AppCompatActivity {
 

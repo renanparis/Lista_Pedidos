@@ -1,4 +1,4 @@
-package com.paris.hayorders.activity;
+package com.paris.hayorders.ui.activity;
 
 public interface ConstantsActivity {
 

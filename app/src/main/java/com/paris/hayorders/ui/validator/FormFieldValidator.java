@@ -1,4 +1,4 @@
-package com.paris.hayorders.validator;
+package com.paris.hayorders.ui.validator;
 
 import android.widget.EditText;
 

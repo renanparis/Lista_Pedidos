@@ -1,11 +1,11 @@
-package com.paris.hayorders.activity.preferences;
+package com.paris.hayorders.ui.activity.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
 public class SplashScreenPreferences {
 
-    private static final String SPLASH_SCREEN_PREFERENCES = "com.paris.hayorders.activity.preferences.SplashScreenPreferences";
+    private static final String SPLASH_SCREEN_PREFERENCES = "com.paris.hayorders.ui.activity.preferences.SplashScreenPreferences";
     private Context context;
 
     public SplashScreenPreferences(Context context) {

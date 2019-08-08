@@ -1,4 +1,4 @@
-package com.paris.hayorders.recyclerview.listener;
+package com.paris.hayorders.ui.recyclerview.listener;
 
 import android.view.MenuItem;
 

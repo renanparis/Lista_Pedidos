@@ -1,4 +1,4 @@
-package com.paris.hayorders.dao;
+package com.paris.hayorders.database.dao;
 
 import androidx.room.Dao;
 import androidx.room.Delete;

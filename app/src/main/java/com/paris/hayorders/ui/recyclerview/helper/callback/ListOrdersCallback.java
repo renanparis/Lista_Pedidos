@@ -1,10 +1,10 @@
-package com.paris.hayorders.recyclerview.helper.callback;
+package com.paris.hayorders.ui.recyclerview.helper.callback;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.paris.hayorders.recyclerview.ListOrderRecyclerAdapter;
+import com.paris.hayorders.ui.recyclerview.ListOrderRecyclerAdapter;
 
 public class ListOrdersCallback extends ItemTouchHelper.Callback {
 

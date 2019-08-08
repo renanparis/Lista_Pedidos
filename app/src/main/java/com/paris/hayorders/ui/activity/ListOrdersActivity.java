@@ -1,4 +1,4 @@
-package com.paris.hayorders.activity;
+package com.paris.hayorders.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.paris.hayorders.R;
 import com.paris.hayorders.asynctask.SearchAllOrders;
-import com.paris.hayorders.dao.CustomerDao;
+import com.paris.hayorders.database.dao.CustomerDao;
 import com.paris.hayorders.database.CustomerDatabase;
 import com.paris.hayorders.model.Customers;
-import com.paris.hayorders.recyclerview.ListOrderRecyclerAdapter;
-import com.paris.hayorders.recyclerview.helper.callback.ListOrdersCallback;
+import com.paris.hayorders.ui.recyclerview.ListOrderRecyclerAdapter;
+import com.paris.hayorders.ui.recyclerview.helper.callback.ListOrdersCallback;
 
 import java.util.List;
 

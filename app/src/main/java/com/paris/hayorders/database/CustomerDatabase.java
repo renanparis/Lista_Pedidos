@@ -6,7 +6,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.paris.hayorders.dao.CustomerDao;
+import com.paris.hayorders.database.dao.CustomerDao;
 import com.paris.hayorders.model.Customers;
 
 @Database(entities = {Customers.class}, version = 1)

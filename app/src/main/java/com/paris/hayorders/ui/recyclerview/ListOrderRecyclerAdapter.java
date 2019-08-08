@@ -1,4 +1,4 @@
-package com.paris.hayorders.recyclerview;
+package com.paris.hayorders.ui.recyclerview;
 
 import android.content.Context;
 import android.view.LayoutInflater;

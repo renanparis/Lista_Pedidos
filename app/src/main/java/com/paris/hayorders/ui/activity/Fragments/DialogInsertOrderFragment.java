@@ -1,4 +1,4 @@
-package com.paris.hayorders.activity.Fragments;
+package com.paris.hayorders.ui.activity.Fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

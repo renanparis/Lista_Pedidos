@@ -1,4 +1,4 @@
-package com.paris.hayorders.activity;
+package com.paris.hayorders.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -16,24 +16,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.paris.hayorders.R;
-import com.paris.hayorders.activity.Fragments.DialogInsertOrderFragment;
+import com.paris.hayorders.ui.activity.Fragments.DialogInsertOrderFragment;
 import com.paris.hayorders.asynctask.RemoveTask;
 import com.paris.hayorders.asynctask.SaveCustomerTask;
 import com.paris.hayorders.asynctask.SearchAllCustomers;
 import com.paris.hayorders.asynctask.UpdateCustomerTask;
-import com.paris.hayorders.dao.CustomerDao;
+import com.paris.hayorders.database.dao.CustomerDao;
 import com.paris.hayorders.database.CustomerDatabase;
 import com.paris.hayorders.model.Customers;
-import com.paris.hayorders.recyclerview.CustomersRecyclerAdapter;
+import com.paris.hayorders.ui.recyclerview.CustomersRecyclerAdapter;
 
 import java.util.List;
 
-import static com.paris.hayorders.activity.ConstantsActivity.INVALID_VALUE;
-import static com.paris.hayorders.activity.ConstantsActivity.KEY_POSITION;
-import static com.paris.hayorders.activity.ConstantsActivity.KEY_RESULT_FORM;
-import static com.paris.hayorders.activity.ConstantsActivity.KEY_UPDATE_CUSTOMER;
-import static com.paris.hayorders.recyclerview.ConstantsContextMenu.DELETE_ID;
-import static com.paris.hayorders.recyclerview.ConstantsContextMenu.EDIT_ID;
+import static com.paris.hayorders.ui.activity.ConstantsActivity.INVALID_VALUE;
+import static com.paris.hayorders.ui.activity.ConstantsActivity.KEY_POSITION;
+import static com.paris.hayorders.ui.activity.ConstantsActivity.KEY_RESULT_FORM;
+import static com.paris.hayorders.ui.activity.ConstantsActivity.KEY_UPDATE_CUSTOMER;
+import static com.paris.hayorders.ui.recyclerview.ConstantsContextMenu.DELETE_ID;
+import static com.paris.hayorders.ui.recyclerview.ConstantsContextMenu.EDIT_ID;
 
 public class CustomerListActivity extends AppCompatActivity implements DialogInsertOrderFragment.InputOrderListener {
 

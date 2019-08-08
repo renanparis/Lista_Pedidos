@@ -1,4 +1,4 @@
-package com.paris.hayorders.recyclerview;
+package com.paris.hayorders.ui.recyclerview;
 
 import android.content.Context;
 import android.view.ContextMenu;
@@ -14,14 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.paris.hayorders.R;
 import com.paris.hayorders.model.Customers;
-import com.paris.hayorders.recyclerview.listener.OnItemClickListener;
-import com.paris.hayorders.recyclerview.listener.OnMenuItemClickListener;
+import com.paris.hayorders.ui.recyclerview.listener.OnItemClickListener;
+import com.paris.hayorders.ui.recyclerview.listener.OnMenuItemClickListener;
 
 import java.util.Collections;
 import java.util.List;
 
-import static com.paris.hayorders.recyclerview.ConstantsContextMenu.DELETE_ID;
-import static com.paris.hayorders.recyclerview.ConstantsContextMenu.EDIT_ID;
+import static com.paris.hayorders.ui.recyclerview.ConstantsContextMenu.DELETE_ID;
+import static com.paris.hayorders.ui.recyclerview.ConstantsContextMenu.EDIT_ID;
 
 public class CustomersRecyclerAdapter extends RecyclerView.Adapter<CustomersRecyclerAdapter.CustomersViewHolderAdapter> {
 
