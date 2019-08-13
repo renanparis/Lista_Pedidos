@@ -8,23 +8,21 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.paris.hayorders.R;
-import com.paris.hayorders.ui.activity.Fragments.DialogInsertOrderFragment;
-import com.paris.hayorders.asynctask.RemoveTask;
-import com.paris.hayorders.asynctask.SaveCustomerTask;
 import com.paris.hayorders.asynctask.SearchAllCustomers;
-import com.paris.hayorders.asynctask.UpdateCustomerTask;
-import com.paris.hayorders.database.dao.CustomerDao;
 import com.paris.hayorders.database.CustomerDatabase;
+import com.paris.hayorders.database.dao.CustomerDao;
 import com.paris.hayorders.model.Customers;
+import com.paris.hayorders.ui.Dialog.DeleteCustomerDialog;
+import com.paris.hayorders.ui.Dialog.InsertOrderDialog;
+import com.paris.hayorders.ui.UpdaterDatabase;
 import com.paris.hayorders.ui.recyclerview.CustomersRecyclerAdapter;
+import com.paris.hayorders.ui.recyclerview.listener.OnItemClickListener;
 
 import java.util.List;
 
@@ -32,15 +30,17 @@ import static com.paris.hayorders.ui.activity.ConstantsActivity.INVALID_VALUE;
 import static com.paris.hayorders.ui.activity.ConstantsActivity.KEY_POSITION;
 import static com.paris.hayorders.ui.activity.ConstantsActivity.KEY_RESULT_FORM;
 import static com.paris.hayorders.ui.activity.ConstantsActivity.KEY_UPDATE_CUSTOMER;
-import static com.paris.hayorders.ui.recyclerview.ConstantsContextMenu.DELETE_ID;
-import static com.paris.hayorders.ui.recyclerview.ConstantsContextMenu.EDIT_ID;
+import static com.paris.hayorders.ui.ConstantsContextMenu.DELETE_ID;
+import static com.paris.hayorders.ui.ConstantsContextMenu.EDIT_ID;
 
-public class CustomerListActivity extends AppCompatActivity implements DialogInsertOrderFragment.InputOrderListener {
+public class CustomerListActivity extends AppCompatActivity {
 
-    public static final int REQUEST_CODE_INSERT_CUSTOMER = 1;
-    public static final int REQUEST_CODE_UPDATE_CUSTOMER = 2;
-    public static final String INSERT_ORDER_DIALOG = "InsertOrderDialog";
-    public static final String TITLE_ACTIVITY = "Lista de clientes";
+    private static final int REQUEST_CODE_INSERT_CUSTOMER = 1;
+    private static final int REQUEST_CODE_UPDATE_CUSTOMER = 2;
+    private static final String TITLE_ACTIVITY = "Lista de clientes";
+    public static final String MESSAGE_UPDATE_SUCCESSFULLY = "Cliente alterado com sucesso";
+    public static final String MESSAGE_CUSTOMER_CREATED_SUCCESSFULLY = "Cliente criado com sucesso";
+    public static final String MESSAGE_DELETE_SUCCESSFULLY = "Cliente deletado com sucesso";
     private CustomerDao dao;
     private CustomersRecyclerAdapter adapter;
     private Customers customer;
@@ -58,19 +58,6 @@ public class CustomerListActivity extends AppCompatActivity implements DialogIns
 
     }
 
-    @Override
-    public void sendInputOrder(String input) {
-
-        if (input.equals("")) {
-            input = String.valueOf(0);
-        }
-        customer.setOrder(Long.parseLong(input));
-        new UpdateCustomerTask(dao, customer).execute();
-        adapter.insertOrder(customer);
-
-
-    }
-
     private void configRecyclerAdapter(List<Customers> customers) {
         RecyclerView customerList = findViewById(R.id.customer_list);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -82,23 +69,37 @@ public class CustomerListActivity extends AppCompatActivity implements DialogIns
     }
 
     private void configItemClickListener() {
-        adapter.setOnItemClickListener(customer -> {
-            showInsertOrderDialog();
-            getCustomerClicked(customer);
+        adapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(Customers customer, int position) {
+                showInsertOrderDialog(customer, position);
+            }
         });
     }
 
-    private void getCustomerClicked(Customers customerClicked) {
+    private void showInsertOrderDialog(Customers customer, int position) {
+        InsertOrderDialog dialog = new InsertOrderDialog(this, new InsertOrderDialog.InputOrderListener() {
+            @Override
+            public void InputOrder(String input) {
+                saveInputOrder(input, customer, position);
+            }
+        });
 
-        customer = customerClicked;
-
+        dialog.show();
     }
 
-    private void showInsertOrderDialog() {
-        DialogFragment dialogFragment = new DialogInsertOrderFragment();
-        dialogFragment.show(getSupportFragmentManager(), INSERT_ORDER_DIALOG);
-
+    private void saveInputOrder(String input, Customers customer, int position) {
+        if (input.equals("")) {
+            input = String.valueOf(0);
+        }
+        customer.setOrder(Long.parseLong(input));
+        saveOrder(customer, position);
     }
+
+    private void saveOrder(Customers customer, int position) {
+        new UpdaterDatabase(dao, customer, adapter).saveOrder(position);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -111,6 +112,7 @@ public class CustomerListActivity extends AppCompatActivity implements DialogIns
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+
         switch (item.getItemId()) {
 
             case R.id.menu_delete_all_orders:
@@ -120,11 +122,9 @@ public class CustomerListActivity extends AppCompatActivity implements DialogIns
             case R.id.menu_list_order:
                 goToListOrders();
                 break;
-
         }
 
         return super.onOptionsItemSelected(item);
-
     }
 
     private void goToListOrders() {
@@ -133,14 +133,7 @@ public class CustomerListActivity extends AppCompatActivity implements DialogIns
     }
 
     private void deleteAllOrders() {
-        new SearchAllCustomers(dao, customers -> {
-            for (Customers customer :
-                    customers) {
-                customer.setOrder(0);
-                new UpdateCustomerTask(dao, customer).execute();
-                adapter.insertOrder(customer);
-            }
-        }).execute();
+        new UpdaterDatabase(dao, customer, adapter).deleteAllOrders();
     }
 
     private void configContextMenuListener() {
@@ -152,7 +145,7 @@ public class CustomerListActivity extends AppCompatActivity implements DialogIns
                     break;
 
                 case DELETE_ID:
-                    showAlertDialog(customer, position);
+                    showDeleteAlertDialog(customer, position);
             }
 
         });
@@ -165,14 +158,17 @@ public class CustomerListActivity extends AppCompatActivity implements DialogIns
         startActivityForResult(goToUpdateCustomerForm, REQUEST_CODE_UPDATE_CUSTOMER);
     }
 
-    private void showAlertDialog(Customers customer, int position) {
-        new AlertDialog.Builder(this).setTitle("Deletar Cliente")
-                .setMessage("Deseja deletar cliente").setPositiveButton("Sim", (dialog, which) -> {
-            adapter.remove(position);
-            new RemoveTask(dao, customer).execute();
-            Toast.makeText(CustomerListActivity.this, "Cliente deletado com sucesso",
-                    Toast.LENGTH_SHORT).show();
-        }).setNegativeButton("Não", (dialog, which) -> dialog.dismiss()).show();
+    private void showDeleteAlertDialog(Customers customer, int position) {
+        DeleteCustomerDialog dialog =
+                new DeleteCustomerDialog(this, customer, customerReceived ->
+                        CustomerListActivity.this.deleteCustomer(customer, position));
+
+        dialog.show();
+    }
+
+    private void deleteCustomer(Customers customer, int position) {
+        new UpdaterDatabase(dao, customer, adapter).deleteCustomer(position);
+        messageCustomerDeletedSuccessfully();
     }
 
     private void configList() {
@@ -195,31 +191,45 @@ public class CustomerListActivity extends AppCompatActivity implements DialogIns
         if (requestCode == REQUEST_CODE_INSERT_CUSTOMER && resultCode == Activity.RESULT_OK && data.hasExtra(KEY_RESULT_FORM)) {
 
             customer = data.getParcelableExtra(KEY_RESULT_FORM);
-
-            new SaveCustomerTask(dao, customer).execute();
-
-            adapter.insertCustomer(customer);
-            Toast.makeText(CustomerListActivity.this,
-                    "Cliente criado com sucesso", Toast.LENGTH_SHORT).show();
-
+            saveCustomer();
         }
 
         if (requestCode == REQUEST_CODE_UPDATE_CUSTOMER && resultCode == Activity.RESULT_OK && data.hasExtra(KEY_RESULT_FORM)) {
-
 
             customer = data.getParcelableExtra(KEY_RESULT_FORM);
             int positionReceived = data.getIntExtra(KEY_POSITION, INVALID_VALUE);
             if (positionReceived > INVALID_VALUE) {
 
-                new UpdateCustomerTask(dao, customer).execute();
-                adapter.update(customer, positionReceived);
-                Toast.makeText(this, "Cliente alterado com sucesso", Toast.LENGTH_SHORT).show();
+                updateCustomer(positionReceived);
             }
 
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    private void updateCustomer(int positionReceived) {
+        new UpdaterDatabase(dao, customer, adapter).updateCustomer(positionReceived);
+        messageCustomerUpdateSuccessfully();
+    }
+
+    private void messageCustomerUpdateSuccessfully() {
+        Toast.makeText(this, MESSAGE_UPDATE_SUCCESSFULLY, Toast.LENGTH_SHORT).show();
+    }
+
+    private void saveCustomer() {
+        new UpdaterDatabase(dao, customer, adapter).saveCustomer();
+        messageCustomerSavedSuccessfully();
+    }
+
+    private void messageCustomerSavedSuccessfully() {
+        Toast.makeText(CustomerListActivity.this,
+                MESSAGE_CUSTOMER_CREATED_SUCCESSFULLY, Toast.LENGTH_SHORT).show();
+    }
+
+    private void messageCustomerDeletedSuccessfully(){
+        Toast.makeText(this, MESSAGE_DELETE_SUCCESSFULLY,
+                Toast.LENGTH_SHORT).show();
+    }
 
 }
 

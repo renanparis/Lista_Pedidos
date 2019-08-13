@@ -20,8 +20,8 @@ import com.paris.hayorders.ui.recyclerview.listener.OnMenuItemClickListener;
 import java.util.Collections;
 import java.util.List;
 
-import static com.paris.hayorders.ui.recyclerview.ConstantsContextMenu.DELETE_ID;
-import static com.paris.hayorders.ui.recyclerview.ConstantsContextMenu.EDIT_ID;
+import static com.paris.hayorders.ui.ConstantsContextMenu.DELETE_ID;
+import static com.paris.hayorders.ui.ConstantsContextMenu.EDIT_ID;
 
 public class CustomersRecyclerAdapter extends RecyclerView.Adapter<CustomersRecyclerAdapter.CustomersViewHolderAdapter> {
 
@@ -81,26 +81,32 @@ public class CustomersRecyclerAdapter extends RecyclerView.Adapter<CustomersRecy
 
     public void remove(int position) {
         customers.remove(position);
-        notifyItemRangeRemoved(position, getItemCount());
+        notifyDataSetChanged();
     }
 
     private void sortListByName(){
         Collections.sort(customers);
     }
 
-    public void insertOrder(Customers customer) {
+    public void insertOrder(Customers customer, int position) {
+
+        customers.set(position, customer);
+        notifyDataSetChanged();
+
+    }
+
+    public void deleteOrder(Customers customer) {
+
         int position;
 
-        for (int i = 0; i <customers.size(); i++){
-            if (customers.get(i).getId() == customer.getId()){
-                position = i;
+        for (int i = 0; i < customers.size(); i++){
+            position = i;
+            if(customers.get(position).getId() == customer.getId()){
                 customers.set(position, customer);
                 notifyItemChanged(position);
                 return;
             }
-
         }
-
     }
 
     class CustomersViewHolderAdapter extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
@@ -123,7 +129,7 @@ public class CustomersRecyclerAdapter extends RecyclerView.Adapter<CustomersRecy
             order = itemView.findViewById(R.id.item_list_order);
             this.onMenuItemClickListener = onMenuItemClickListener;
             itemView.setOnCreateContextMenuListener(this);
-            itemView.setOnClickListener(v -> onItemClick.onItemClick(customer));
+            itemView.setOnClickListener(v -> onItemClick.onItemClick(customer, getAdapterPosition()));
 
         }
 

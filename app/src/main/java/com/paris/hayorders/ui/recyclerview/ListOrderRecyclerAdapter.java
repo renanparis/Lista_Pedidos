@@ -69,7 +69,7 @@ public class ListOrderRecyclerAdapter extends RecyclerView.Adapter<ListOrderRecy
             order = itemView.findViewById(R.id.list_order);
         }
 
-        public void setValues (Customers customer){
+        void setValues(Customers customer){
             name.setText(customer.getName());
             city.setText(customer.getCity());
             if (customer.getOrder() !=0){

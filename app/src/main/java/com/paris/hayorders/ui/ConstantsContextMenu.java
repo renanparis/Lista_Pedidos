@@ -1,4 +1,4 @@
-package com.paris.hayorders.ui.recyclerview;
+package com.paris.hayorders.ui;
 
 public interface ConstantsContextMenu {
 
