@@ -22,25 +22,21 @@ import com.paris.hayorders.ui.Dialog.DeleteCustomerDialog;
 import com.paris.hayorders.ui.Dialog.InsertOrderDialog;
 import com.paris.hayorders.ui.UpdaterDatabase;
 import com.paris.hayorders.ui.recyclerview.CustomersRecyclerAdapter;
-import com.paris.hayorders.ui.recyclerview.listener.OnItemClickListener;
 
 import java.util.List;
 
+import static com.paris.hayorders.ui.ConstantsContextMenu.DELETE_ID;
+import static com.paris.hayorders.ui.ConstantsContextMenu.EDIT_ID;
 import static com.paris.hayorders.ui.activity.ConstantsActivity.INVALID_VALUE;
 import static com.paris.hayorders.ui.activity.ConstantsActivity.KEY_POSITION;
 import static com.paris.hayorders.ui.activity.ConstantsActivity.KEY_RESULT_FORM;
 import static com.paris.hayorders.ui.activity.ConstantsActivity.KEY_UPDATE_CUSTOMER;
-import static com.paris.hayorders.ui.ConstantsContextMenu.DELETE_ID;
-import static com.paris.hayorders.ui.ConstantsContextMenu.EDIT_ID;
 
 public class CustomerListActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_INSERT_CUSTOMER = 1;
     private static final int REQUEST_CODE_UPDATE_CUSTOMER = 2;
     private static final String TITLE_ACTIVITY = "Lista de clientes";
-    public static final String MESSAGE_UPDATE_SUCCESSFULLY = "Cliente alterado com sucesso";
-    public static final String MESSAGE_CUSTOMER_CREATED_SUCCESSFULLY = "Cliente criado com sucesso";
-    public static final String MESSAGE_DELETE_SUCCESSFULLY = "Cliente deletado com sucesso";
     private CustomerDao dao;
     private CustomersRecyclerAdapter adapter;
     private Customers customer;
@@ -69,21 +65,12 @@ public class CustomerListActivity extends AppCompatActivity {
     }
 
     private void configItemClickListener() {
-        adapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(Customers customer, int position) {
-                showInsertOrderDialog(customer, position);
-            }
-        });
+        adapter.setOnItemClickListener(this::showInsertOrderDialog);
     }
 
     private void showInsertOrderDialog(Customers customer, int position) {
-        InsertOrderDialog dialog = new InsertOrderDialog(this, new InsertOrderDialog.InputOrderListener() {
-            @Override
-            public void InputOrder(String input) {
-                saveInputOrder(input, customer, position);
-            }
-        });
+        InsertOrderDialog dialog = new InsertOrderDialog(this, input ->
+                saveInputOrder(input, customer, position));
 
         dialog.show();
     }
@@ -168,7 +155,7 @@ public class CustomerListActivity extends AppCompatActivity {
 
     private void deleteCustomer(Customers customer, int position) {
         new UpdaterDatabase(dao, customer, adapter).deleteCustomer(position);
-        messageCustomerDeletedSuccessfully();
+        messageToast("Cliente Deletado com Sucesso");
     }
 
     private void configList() {
@@ -209,25 +196,17 @@ public class CustomerListActivity extends AppCompatActivity {
 
     private void updateCustomer(int positionReceived) {
         new UpdaterDatabase(dao, customer, adapter).updateCustomer(positionReceived);
-        messageCustomerUpdateSuccessfully();
-    }
-
-    private void messageCustomerUpdateSuccessfully() {
-        Toast.makeText(this, MESSAGE_UPDATE_SUCCESSFULLY, Toast.LENGTH_SHORT).show();
+        messageToast("Cliente Alterado com Sucesso");
     }
 
     private void saveCustomer() {
         new UpdaterDatabase(dao, customer, adapter).saveCustomer();
-        messageCustomerSavedSuccessfully();
+        messageToast("Cliente Salvo com Sucesso");
     }
 
-    private void messageCustomerSavedSuccessfully() {
-        Toast.makeText(CustomerListActivity.this,
-                MESSAGE_CUSTOMER_CREATED_SUCCESSFULLY, Toast.LENGTH_SHORT).show();
-    }
 
-    private void messageCustomerDeletedSuccessfully(){
-        Toast.makeText(this, MESSAGE_DELETE_SUCCESSFULLY,
+    private void messageToast(String message) {
+        Toast.makeText(this, message,
                 Toast.LENGTH_SHORT).show();
     }
 
