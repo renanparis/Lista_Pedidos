@@ -37,6 +37,10 @@ public class CustomerListActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_INSERT_CUSTOMER = 1;
     private static final int REQUEST_CODE_UPDATE_CUSTOMER = 2;
     private static final String TITLE_ACTIVITY = "Lista de clientes";
+    public static final String EMPATY_ORDER = "";
+    public static final String MESSAGE_DELETE_CUSTOMER = "Cliente Deletado com Sucesso";
+    public static final String MESSAGE_UPDATE_CUSTOMER = "Cliente Alterado com Sucesso";
+    public static final String MESSAGE_SAVE_CUSTOMER = "Cliente Salvo com Sucesso";
     private CustomerDao dao;
     private CustomersRecyclerAdapter adapter;
     private Customers customer;
@@ -65,7 +69,9 @@ public class CustomerListActivity extends AppCompatActivity {
     }
 
     private void configItemClickListener() {
-        adapter.setOnItemClickListener(this::showInsertOrderDialog);
+        adapter.setOnItemClickListener((customer, position) -> {
+            showInsertOrderDialog(customer, position);
+        });
     }
 
     private void showInsertOrderDialog(Customers customer, int position) {
@@ -76,7 +82,7 @@ public class CustomerListActivity extends AppCompatActivity {
     }
 
     private void saveInputOrder(String input, Customers customer, int position) {
-        if (input.equals("")) {
+        if (input.equals(EMPATY_ORDER)) {
             input = String.valueOf(0);
         }
         customer.setOrder(Long.parseLong(input));
@@ -98,7 +104,6 @@ public class CustomerListActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
 
         switch (item.getItemId()) {
 
@@ -155,7 +160,7 @@ public class CustomerListActivity extends AppCompatActivity {
 
     private void deleteCustomer(Customers customer, int position) {
         new UpdaterDatabase(dao, customer, adapter).deleteCustomer(position);
-        messageToast("Cliente Deletado com Sucesso");
+        messageToast(MESSAGE_DELETE_CUSTOMER);
     }
 
     private void configList() {
@@ -196,12 +201,12 @@ public class CustomerListActivity extends AppCompatActivity {
 
     private void updateCustomer(int positionReceived) {
         new UpdaterDatabase(dao, customer, adapter).updateCustomer(positionReceived);
-        messageToast("Cliente Alterado com Sucesso");
+        messageToast(MESSAGE_UPDATE_CUSTOMER);
     }
 
     private void saveCustomer() {
         new UpdaterDatabase(dao, customer, adapter).saveCustomer();
-        messageToast("Cliente Salvo com Sucesso");
+        messageToast(MESSAGE_SAVE_CUSTOMER);
     }
 
 

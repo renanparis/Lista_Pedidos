@@ -34,6 +34,12 @@ public class CustomersRecyclerAdapter extends RecyclerView.Adapter<CustomersRecy
     public CustomersRecyclerAdapter(List<Customers> customers, Context context) {
         this.context = context;
         this.customers = customers;
+        setHasStableIds(true);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return customers.get(position).getId();
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -75,23 +81,23 @@ public class CustomersRecyclerAdapter extends RecyclerView.Adapter<CustomersRecy
 
     public void update(Customers customer, int position) {
         customers.set(position, customer);
+        notifyItemChanged(position);
         sortListByName();
-        notifyDataSetChanged();
     }
 
     public void remove(int position) {
         customers.remove(position);
-        notifyDataSetChanged();
+        notifyItemRemoved(position);
     }
 
-    private void sortListByName(){
+    private void sortListByName() {
         Collections.sort(customers);
     }
 
     public void insertOrder(Customers customer, int position) {
 
         customers.set(position, customer);
-        notifyDataSetChanged();
+        notifyItemChanged(position);
 
     }
 
@@ -99,9 +105,9 @@ public class CustomersRecyclerAdapter extends RecyclerView.Adapter<CustomersRecy
 
         int position;
 
-        for (int i = 0; i < customers.size(); i++){
+        for (int i = 0; i < customers.size(); i++) {
             position = i;
-            if(customers.get(position).getId() == customer.getId()){
+            if (customers.get(position).getId() == customer.getId()) {
                 customers.set(position, customer);
                 notifyItemChanged(position);
                 return;
@@ -136,7 +142,6 @@ public class CustomersRecyclerAdapter extends RecyclerView.Adapter<CustomersRecy
         void setValues(Customers customer) {
 
             this.customer = customer;
-
             name.setText(customer.getName());
             city.setText(customer.getCity());
             if (customer.getOrder() != 0) {

@@ -29,7 +29,7 @@ public class UpdaterDatabase {
     }
 
     public void saveCustomer() {
-        new SaveCustomerTask(dao, customer).execute();
+        new SaveCustomerTask(dao, customer, id -> customer.setId(id)).execute();
         adapter.insertCustomer(customer);
     }
 

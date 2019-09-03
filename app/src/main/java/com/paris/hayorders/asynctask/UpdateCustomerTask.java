@@ -20,6 +20,8 @@ public class UpdateCustomerTask extends AsyncTask <Void, Void, Void>{
     protected Void doInBackground(Void...voids) {
 
         dao.updateCustomer(customer);
+
         return null;
+
     }
 }
