@@ -55,6 +55,12 @@ public class ListOrderRecyclerAdapter extends RecyclerView.Adapter<ListOrderRecy
         notifyItemMoved(positionHome, positionEnd);
     }
 
+    public void removeCustomerOfList(int position) {
+
+        listOrders.remove(position);
+        notifyItemRemoved(position);
+    }
+
     class ListOrdersViewHolder extends RecyclerView.ViewHolder{
 
         private TextView name;

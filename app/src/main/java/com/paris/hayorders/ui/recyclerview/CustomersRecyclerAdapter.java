@@ -121,6 +121,7 @@ public class CustomersRecyclerAdapter extends RecyclerView.Adapter<CustomersRecy
         private static final String DELETE = "Deletar";
         private static final int EDIT_ORDER = 1;
         private static final int DELETE_ORDER = 2;
+        public static final String EMPTY_FIELD = "";
         private final TextView name;
         private final TextView city;
         private final TextView order;
@@ -147,6 +148,8 @@ public class CustomersRecyclerAdapter extends RecyclerView.Adapter<CustomersRecy
             if (customer.getOrder() != 0) {
                 order.setText(String.valueOf(customer.getOrder()));
 
+            }else{
+                order.setText(EMPTY_FIELD);
             }
         }
 

@@ -36,5 +36,10 @@ public class ListOrdersCallback extends ItemTouchHelper.Callback {
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 
+        int position = viewHolder.getAdapterPosition();
+
+        adapter.removeCustomerOfList(position);
+
+
     }
 }
