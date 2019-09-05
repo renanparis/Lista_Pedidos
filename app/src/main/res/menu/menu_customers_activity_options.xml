@@ -3,10 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/search_customer"
+        android:icon="@drawable/ic_search_customer"
+        app:showAsAction="ifRoom"
+        app:actionViewClass="android.widget.SearchView"
+        android:title="@string/search_customer">
+
+
+    </item>
+
+    <item
         android:id="@+id/menu_delete_all_orders"
         android:icon="@drawable/ic_action_delete_all_orders"
         android:title="@string/delete_orders"
-        app:showAsAction="always">
+        app:showAsAction="ifRoom">
 
     </item>
 

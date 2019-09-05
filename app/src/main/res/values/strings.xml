@@ -11,4 +11,5 @@
     <string name="create_list_orders">Gerar lista de pedidos</string>
     <string name="name_title">Fazenda</string>
     <string name="name_farm">Bons Ventos</string>
+    <string name="search_customer">Buscar Clientes</string>
 </resources>

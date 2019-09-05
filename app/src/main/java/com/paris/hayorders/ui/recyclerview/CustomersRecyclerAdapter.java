@@ -17,6 +17,7 @@ import com.paris.hayorders.model.Customers;
 import com.paris.hayorders.ui.recyclerview.listener.OnItemClickListener;
 import com.paris.hayorders.ui.recyclerview.listener.OnMenuItemClickListener;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -115,13 +116,32 @@ public class CustomersRecyclerAdapter extends RecyclerView.Adapter<CustomersRecy
         }
     }
 
+    public void searchCustomer(String query) {
+
+//        List<Customers> beforeSearch = this.customers;
+
+        List<Customers> search = new ArrayList<>();
+        if (query != null) {
+
+            for (Customers customer : customers) {
+                String name = customer.getName().toLowerCase();
+                if (name.contains(query)) {
+                    search.add(customer);
+                }
+
+            }
+            this.customers = search;
+            notifyDataSetChanged();
+        }
+    }
+
     class CustomersViewHolderAdapter extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
 
         private static final String EDIT = "Editar";
         private static final String DELETE = "Deletar";
         private static final int EDIT_ORDER = 1;
         private static final int DELETE_ORDER = 2;
-        public static final String EMPTY_FIELD = "";
+        static final String EMPTY_FIELD = "";
         private final TextView name;
         private final TextView city;
         private final TextView order;
@@ -148,7 +168,7 @@ public class CustomersRecyclerAdapter extends RecyclerView.Adapter<CustomersRecy
             if (customer.getOrder() != 0) {
                 order.setText(String.valueOf(customer.getOrder()));
 
-            }else{
+            } else {
                 order.setText(EMPTY_FIELD);
             }
         }

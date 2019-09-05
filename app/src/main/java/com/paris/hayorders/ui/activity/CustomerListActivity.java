@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -98,7 +99,33 @@ public class CustomerListActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu_customers_activity_options, menu);
+
+        SearchView search = (SearchView) menu.findItem(R.id.search_customer).getActionView();
+
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                // adapter.searchCustomer(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.searchCustomer(newText);
+
+                return false;
+            }
+        });
+
+        search.setOnCloseListener(() -> {
+            configList();
+            return false;
+        });
+
+
         return super.onCreateOptionsMenu(menu);
+
 
     }
 
