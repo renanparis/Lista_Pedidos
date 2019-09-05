@@ -70,9 +70,7 @@ public class CustomerListActivity extends AppCompatActivity {
     }
 
     private void configItemClickListener() {
-        adapter.setOnItemClickListener((customer, position) -> {
-            showInsertOrderDialog(customer, position);
-        });
+        adapter.setOnItemClickListener(this::showInsertOrderDialog);
     }
 
     private void showInsertOrderDialog(Customers customer, int position) {
