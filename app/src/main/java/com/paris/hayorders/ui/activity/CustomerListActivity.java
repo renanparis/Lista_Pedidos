@@ -106,7 +106,7 @@ public class CustomerListActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
 
-                // adapter.searchCustomer(query);
+              //  adapter.searchCustomer(query);
                 return false;
             }
 
@@ -128,6 +128,7 @@ public class CustomerListActivity extends AppCompatActivity {
 
 
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

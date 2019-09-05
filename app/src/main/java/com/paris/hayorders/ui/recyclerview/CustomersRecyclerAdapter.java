@@ -118,8 +118,6 @@ public class CustomersRecyclerAdapter extends RecyclerView.Adapter<CustomersRecy
 
     public void searchCustomer(String query) {
 
-//        List<Customers> beforeSearch = this.customers;
-
         List<Customers> search = new ArrayList<>();
         if (query != null) {
 
@@ -134,6 +132,7 @@ public class CustomersRecyclerAdapter extends RecyclerView.Adapter<CustomersRecy
             notifyDataSetChanged();
         }
     }
+
 
     class CustomersViewHolderAdapter extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
 
