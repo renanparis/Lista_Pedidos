@@ -1,6 +1,8 @@
 package com.paris.hayorders.ui.activity;
 
 import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -96,35 +98,46 @@ public class CustomerListActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
+        SearchView search = getSearchView(menu);
+        configSearchViewListener(search);
+        return super.onCreateOptionsMenu(menu);
+
+
+    }
+
+    private SearchView getSearchView(Menu menu) {
+
+        return configSearchView(menu);
+    }
+
+    private SearchView configSearchView(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_customers_activity_options, menu);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 
         SearchView search = (SearchView) menu.findItem(R.id.search_customer).getActionView();
 
+        search.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        return search;
+    }
+
+    private void configSearchViewListener(SearchView search) {
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
 
-              //  adapter.searchCustomer(query);
                 return false;
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-                adapter.searchCustomer(newText);
+            public boolean onQueryTextChange(final String newText) {
+
+                new SearchAllCustomers(dao, customers ->
+                        adapter.searchCustomer(newText, customers)).execute();
 
                 return false;
             }
         });
-
-        search.setOnCloseListener(() -> {
-            configList();
-            return false;
-        });
-
-
-        return super.onCreateOptionsMenu(menu);
-
-
     }
 
 

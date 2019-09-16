@@ -116,21 +116,29 @@ public class CustomersRecyclerAdapter extends RecyclerView.Adapter<CustomersRecy
         }
     }
 
-    public void searchCustomer(String query) {
+    public void searchCustomer(String query, List<Customers> customers) {
+
+        this.customers = customers;
+        updateListWithSearch(query);
+    }
+
+    private void updateListWithSearch(String query) {
+        this.customers = searchCustomerInList(query);
+        notifyDataSetChanged();
+    }
+
+    private List<Customers> searchCustomerInList(String query) {
 
         List<Customers> search = new ArrayList<>();
-        if (query != null) {
-
-            for (Customers customer : customers) {
-                String name = customer.getName().toLowerCase();
-                if (name.contains(query)) {
-                    search.add(customer);
-                }
-
+        for (Customers customer : this.customers) {
+            String name = customer.getName().toLowerCase();
+            if (name.contains(query)) {
+                search.add(customer);
             }
-            this.customers = search;
-            notifyDataSetChanged();
+
         }
+
+        return search;
     }
 
 
