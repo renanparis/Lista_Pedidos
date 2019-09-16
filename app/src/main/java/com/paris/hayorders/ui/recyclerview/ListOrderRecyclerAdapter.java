@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.paris.hayorders.R;
 import com.paris.hayorders.model.Customers;
+import com.paris.hayorders.ui.recyclerview.listener.UpdateTotalOrdersListener;
 
 import java.util.Collections;
 import java.util.List;
@@ -20,6 +21,7 @@ public class ListOrderRecyclerAdapter extends RecyclerView.Adapter<ListOrderRecy
 
     private List<Customers> listOrders;
     private Context context;
+    private UpdateTotalOrdersListener listener;
 
     public ListOrderRecyclerAdapter(List<Customers> listOrders, Context context) {
         this.listOrders = listOrders;
@@ -59,7 +61,13 @@ public class ListOrderRecyclerAdapter extends RecyclerView.Adapter<ListOrderRecy
 
         listOrders.remove(position);
         notifyItemRemoved(position);
+        listener.updateTotalOrders(listOrders);
     }
+
+    public void setListener(UpdateTotalOrdersListener listener) {
+        this.listener = listener;
+    }
+
 
     class ListOrdersViewHolder extends RecyclerView.ViewHolder{
 
@@ -70,6 +78,7 @@ public class ListOrderRecyclerAdapter extends RecyclerView.Adapter<ListOrderRecy
 
         ListOrdersViewHolder(@NonNull View itemView) {
             super(itemView);
+
             name = itemView.findViewById(R.id.list_order_name);
             city = itemView.findViewById(R.id.list_order_city);
             order = itemView.findViewById(R.id.list_order);

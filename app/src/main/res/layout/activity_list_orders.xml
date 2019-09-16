@@ -6,16 +6,49 @@
     android:layout_height="match_parent"
     tools:context=".ui.activity.ListOrdersActivity">
 
+    <TextView
+        android:id="@+id/title_sum_orders"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/sum_orders"
+        android:text="@string/total_of_hays"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:layout_marginTop="10dp"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textStyle="bold">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/sum_orders"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/title_sum_orders"
+        app:layout_constraintEnd_toEndOf="@id/title_sum_orders"
+        app:layout_constraintTop_toBottomOf="@id/title_sum_orders"
+        app:layout_constraintBottom_toTopOf="@+id/recycler_order_list"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:textColor="#8A0808"
+        >
+
+    </TextView>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/recycler_order_list"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@id/sum_orders"
+        app:layout_constraintEnd_toEndOf="@id/sum_orders"
+        app:layout_constraintTop_toBottomOf="@id/sum_orders"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:listitem="@layout/item_list_orders">
+        tools:listitem="@layout/item_list_orders"
+        >
 
     </androidx.recyclerview.widget.RecyclerView>
 

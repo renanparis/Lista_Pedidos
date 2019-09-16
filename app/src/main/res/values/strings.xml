@@ -12,4 +12,5 @@
     <string name="name_title">Fazenda</string>
     <string name="name_farm">Bons Ventos</string>
     <string name="search_customer">Buscar Clientes</string>
+    <string name="total_of_hays">Total de Fardos</string>
 </resources>
